@@ -12,4 +12,12 @@ public class Enrollment {
         this.attendee = attendee;
         this.isSubstitute = isSubstitute;
     }
+
+    public Attendee getAttendee() {
+        return attendee;
+    }
+
+    public boolean isSubstitute() {
+        return isSubstitute;
+    }
 }

@@ -68,4 +68,9 @@ public abstract class Entity {
     public UniversityEvents.EntityType getEntityType() {
         return entityType;
     }
+
+    public int getNumAttendees(){
+        // Sin implementar
+        return 0;
+    }
 }

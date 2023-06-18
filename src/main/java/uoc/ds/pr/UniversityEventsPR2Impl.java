@@ -3,11 +3,17 @@ package uoc.ds.pr;
 import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.exceptions.*;
 import uoc.ds.pr.model.*;
+import uoc.ds.pr.util.DSArray;
 
 import java.time.LocalDate;
 
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
 
+    private final DSArray<Role> roles;
+
+    public UniversityEventsPR2Impl() {
+        roles = new DSArray<>(MAX_NUM_ROLES);
+    }
 
     @Override
     public void addRole(String id, String name) {

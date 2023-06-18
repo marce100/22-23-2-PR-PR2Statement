@@ -22,4 +22,6 @@ public class Rating {
         return this.attendee;
     }
 
+    public String getMessage(){ return this.message; }
+
 }
