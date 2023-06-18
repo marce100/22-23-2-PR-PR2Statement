@@ -1,6 +1,7 @@
 package uoc.ds.pr;
 
 import java.time.LocalDate;
+import java.util.PriorityQueue;
 
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
@@ -20,7 +21,9 @@ public class UniversityEventsImpl implements UniversityEvents {
     private final DSArray<Attendee> attendees;
     private final DSArray<Event> events;
 
-    private final Queue<EventRequest> requestQueue;
+    //private final Queue<EventRequest> requestQueue;
+    private final PriorityQueue<EventRequest> requestQueue;
+
     private final List<EventRequest> rejectedRequests;
 
     private Attendee mostActiveAttendee;
@@ -30,7 +33,7 @@ public class UniversityEventsImpl implements UniversityEvents {
         entities = new DSArray<>(MAX_NUM_ENTITIES);
         attendees = new DSArray<>(MAX_NUM_ATTENDEES);
         events = new DSArray<>(MAX_NUM_EVENTS);
-        requestQueue = new QueueArrayImpl<>(MAX_NUM_REQUESTS);
+        requestQueue = new PriorityQueue<>(MAX_NUM_REQUESTS, EventRequest.CMP_V);
         rejectedRequests = new LinkedList<>();
         bestEvent = new OrderedVector<>(MAX_NUM_EVENTS, Event.CMP_V);
     }
@@ -77,6 +80,9 @@ public class UniversityEventsImpl implements UniversityEvents {
         if (entity == null) throw new EntityNotFoundException();
 
         requestQueue.add(new EventRequest(id, eventId, entity, description, installationType, resources, max, startDate, endDate, allowRegister));
+
+
+
     }
 
 
@@ -99,6 +105,14 @@ public class UniversityEventsImpl implements UniversityEvents {
         else {
         	rejectedRequests.insertEnd(request);
         }
+
+        /*aqui
+        Iterator<EventRequest> it = requestQueue.iterator();
+        while (it.hasNext()){
+            EventRequest eventRequest = it.next();
+            System.out.println(eventRequest.getRequestId());
+        }
+        /*aqui*/
 
         return request;
     }
