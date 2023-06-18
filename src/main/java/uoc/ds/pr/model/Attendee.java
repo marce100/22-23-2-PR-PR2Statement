@@ -11,15 +11,16 @@ public class Attendee  {
     private String id;
     private String name;
     private String surname;
-
     private LocalDate dateOfBirth;
+    private String phone;
     private final List<Event> events;
 
-	public Attendee(String idUser, String name, String surname, LocalDate dateOfBirth) {
+	public Attendee(String idUser, String name, String surname, LocalDate dateOfBirth, String phone) {
         this.setId(idUser);
         this.setName(name);
         this.setSurname(surname);
         this.setDateOfBirth(dateOfBirth);
+        this.setPhone(phone);
         this.events = new LinkedList<>();
     }
 
@@ -85,6 +86,9 @@ public class Attendee  {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public int numEvents() {
         return events.size();

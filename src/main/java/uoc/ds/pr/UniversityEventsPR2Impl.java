@@ -1,5 +1,6 @@
 package uoc.ds.pr;
 
+import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.exceptions.*;
 import uoc.ds.pr.model.*;
 
@@ -32,6 +33,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     public Iterator<Worker> getWorkersByEvent(String eventId) throws EventNotFoundException, NoWorkersException {
         return null;
     }
+
 
     @Override
     public Iterator<Worker> getWorkersByRole(String roleId) throws NoWorkersException {

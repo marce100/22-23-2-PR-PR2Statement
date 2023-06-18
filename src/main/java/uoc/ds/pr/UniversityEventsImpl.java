@@ -52,14 +52,15 @@ public class UniversityEventsImpl implements UniversityEvents {
     }
 
 
-    public void addAttendee(String id, String name, String surname, LocalDate dateOfBirth) {
+    public void addAttendee(String id, String name, String surname, LocalDate dateOfBirth, String phone) {
         Attendee attendee = getAttendee(id);
         if (attendee != null) {
             attendee.setName(name);
             attendee.setSurname(surname);
             attendee.setDateOfBirth(dateOfBirth);
+            attendee.setPhone(phone);
         } else {
-            attendee = new Attendee(id, name, surname, dateOfBirth);
+            attendee = new Attendee(id, name, surname, dateOfBirth, phone);
             attendees.put(id, attendee);
         }
 
