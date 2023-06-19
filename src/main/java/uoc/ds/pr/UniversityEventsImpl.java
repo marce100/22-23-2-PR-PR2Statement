@@ -1,7 +1,7 @@
 package uoc.ds.pr;
 
 import java.time.LocalDate;
-import java.util.PriorityQueue;
+import edu.uoc.ds.adt.nonlinear.PriorityQueue;
 
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
@@ -36,6 +36,7 @@ public class UniversityEventsImpl implements UniversityEvents {
         requestQueue = new PriorityQueue<>(MAX_NUM_REQUESTS, EventRequest.CMP_V);
         rejectedRequests = new LinkedList<>();
         bestEvent = new OrderedVector<>(MAX_NUM_EVENTS, Event.CMP_V);
+
     }
 
 
@@ -79,14 +80,38 @@ public class UniversityEventsImpl implements UniversityEvents {
         Entity entity = getEntity(entityId);
         if (entity == null) throw new EntityNotFoundException();
 
+        //System.out.println("Añadir request");
         requestQueue.add(new EventRequest(id, eventId, entity, description, installationType, resources, max, startDate, endDate, allowRegister));
 
 
-
+//        /*aqui*/
+//        System.out.println("---------------------------");
+//        Iterator i= requestQueue.values();
+//        while (i.hasNext()) {
+//            EventRequest e= (EventRequest) i.next();
+//            System.out.println(e.getRequestId()+"    "+e.getEvent().getStartDate());
+//        }
+//        System.out.println("---------------------------");
+//        /*aqui*/
     }
 
 
     public EventRequest updateEventRequest(Status status, LocalDate date, String message) throws NoEventRequestException {
+
+
+
+        /*aqui*
+        System.out.println("update request");
+        System.out.println("---------------------------");
+        for (EventRequest element : requestQueue) {
+            System.out.println(element.getRequestId()+"    "+element.getDateStatus());
+        }
+        System.out.println("---------------------------");
+        /*aqui*/
+
+
+
+        //System.out.println("tamaño cola: "+requestQueue.size());
 
         if (requestQueue.size() == 0) throw new NoEventRequestException();
         EventRequest request = requestQueue.poll();
@@ -94,7 +119,16 @@ public class UniversityEventsImpl implements UniversityEvents {
         	throw new NoEventRequestException();
         }
 
+
+        //System.out.println("Update request");
         request.update(status, date, message);
+
+        //requestQueue.remove(request);
+        //requestQueue.add(request);
+        //request = requestQueue.poll();
+
+        //System.out.println("tamaño cola: "+requestQueue.size());
+
         if (request.isEnabled()) {
             Event event = request.getEvent();
             Entity entity = request.getEntity();
@@ -105,6 +139,18 @@ public class UniversityEventsImpl implements UniversityEvents {
         else {
         	rejectedRequests.insertEnd(request);
         }
+
+        /*aqui
+        System.out.println("fin update");
+        System.out.println("---------------------------");
+        for (EventRequest element : requestQueue) {
+            System.out.println(element.getRequestId()+"    "+element.getDateStatus());
+        }
+        System.out.println("---------------------------");
+        /*aqui*/
+
+        //requestQueue.peek()request); ///////////////////añadir otra vez
+
 
         /*aqui
         Iterator<EventRequest> it = requestQueue.iterator();

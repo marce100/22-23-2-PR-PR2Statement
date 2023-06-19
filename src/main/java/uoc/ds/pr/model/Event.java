@@ -114,4 +114,8 @@ public class Event implements Comparable<Event> {
     }
 
 
+    public LocalDate getStartDate() {
+        //return startDate.toEpochDay();
+        return startDate;
+    }
 }
