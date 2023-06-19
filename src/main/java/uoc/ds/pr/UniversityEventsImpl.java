@@ -24,7 +24,7 @@ public class UniversityEventsImpl implements UniversityEvents {
     //private final Queue<EventRequest> requestQueue;
     private final PriorityQueue<EventRequest> requestQueue;
 
-    private final List<EventRequest> rejectedRequests;
+    private final LinkedList<EventRequest> rejectedRequests;
 
     private Attendee mostActiveAttendee;
     private final OrderedVector<Event> bestEvent;

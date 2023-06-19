@@ -1,16 +1,18 @@
 package uoc.ds.pr.model;
 
+import java.time.LocalDate;
+
 public class Worker {
 
     private String id;
     private String name;
     private String surname;
-    private String birthday;
+    private LocalDate birthday;
     private String roleId;
 
     private Role role;
 
-    public Worker(String id, String name, String surname, String birthday, String roleId) {
+    public Worker(String id, String name, String surname, LocalDate birthday, String roleId) {
         this.setWorkerId(id);
         this.setName(name);
         this.setSurname(surname);
@@ -46,11 +48,11 @@ public class Worker {
         this.surname = surname;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -61,4 +63,41 @@ public class Worker {
     public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
+
+
+
+
+
+
+
+    /*
+    *
+    *
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Worker worker = (Worker) obj;
+        return id == worker.id && Objects.equals(name, worker.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id);
+    }
+    *
+    *
+    * */
+
+
+
+
+
+
+
+
+
+
 }

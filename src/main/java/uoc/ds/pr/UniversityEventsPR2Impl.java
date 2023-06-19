@@ -6,23 +6,43 @@ import uoc.ds.pr.model.*;
 import uoc.ds.pr.util.DSArray;
 
 import java.time.LocalDate;
+import java.util.Hashtable;
 
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
 
     private final DSArray<Role> roles;
 
+    private final Hashtable<String, Worker> workers;
+
     public UniversityEventsPR2Impl() {
+
         roles = new DSArray<>(MAX_NUM_ROLES);
+        workers = new Hashtable<>();
     }
 
     @Override
     public void addRole(String id, String name) {
-
+        Role role = getRole(id);
+        if (role != null) {
+            role.setName(name);
+        } else {
+            role = new Role(id, name);
+            roles.put(id, role);
+        }
     }
 
     @Override
     public void addWorker(String workerId, String name, String surname, LocalDate birthDay, String roleId) {
-
+        Worker worker = getWorker(workerId);
+        if (worker != null) {
+            worker.setName(name);
+            worker.setSurname(surname);
+            worker.setBirthday(birthDay);
+            worker.setRoleId(roleId);
+        } else {
+            worker = new Worker(workerId, name, surname, birthDay, roleId);
+            workers.put(workerId, worker);
+        }
     }
 
     @Override
@@ -103,12 +123,12 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public int numRoles() {
-        return 0;
+        return roles.size();
     }
 
     @Override
     public int numWorkers() {
-        return 0;
+        return workers.size();
     }
 
     @Override
@@ -118,12 +138,12 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Role getRole(String id) {
-        return null;
+        return roles.get(id);
     }
 
     @Override
     public Worker getWorker(String id) {
-        return null;
+        return workers.get(id);
     }
 
     @Override
