@@ -4,11 +4,12 @@ import uoc.ds.pr.UniversityEvents;
 
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class EventRequest implements Comparable<EventRequest> {
 
     //public static final Comparator<EventRequest> CMP_V = (se1, se2)->Double.compare(se1.requestId(), se2.requestId());
-    //public static final Comparator<EventRequest> CMP_V = (se1, se2)->se1.getDateStatus().compareTo(se2.getDateStatus()); ////// Que tengo que poner aqui ???????????
+    public static final Comparator<EventRequest> CMP_V = (se1, se2)->se1.getDateStatus().compareTo(se2.getDateStatus()); ////// Que tengo que poner aqui ???????????
     private final String requestId;
     private UniversityEvents.Status status;
     private String descriptionStatus;
@@ -59,8 +60,12 @@ public class EventRequest implements Comparable<EventRequest> {
     }
 
 
-
-
+    public LocalDate getDateStatus() {
+        if (dateStatus==null) {
+            return LocalDate.of(1,1,1);
+        }
+        return dateStatus;
+    }
 
     @Override
     public int compareTo(EventRequest o) {
