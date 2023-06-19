@@ -144,4 +144,8 @@ public class Event implements Comparable<Event> {
     public int numWorkers(){
         return workers.size();
     }
+
+    public Iterator<Worker> getWorkers(){
+        return workers.values();
+    }
 }
