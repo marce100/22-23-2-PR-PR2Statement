@@ -1,6 +1,8 @@
 package uoc.ds.pr;
 
 import java.time.LocalDate;
+
+import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.PriorityQueue;
 
 import edu.uoc.ds.adt.sequential.LinkedList;
@@ -19,7 +21,8 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     private final DSArray<Entity> entities;
     private final DSArray<Attendee> attendees;
-    private final DSArray<Event> events;
+    //private final DSArray<Event> events;
+    private final DictionaryAVLImpl events;
 
     //private final Queue<EventRequest> requestQueue;
     private final PriorityQueue<EventRequest> requestQueue;
@@ -32,7 +35,8 @@ public class UniversityEventsImpl implements UniversityEvents {
     public UniversityEventsImpl() {
         entities = new DSArray<>(MAX_NUM_ENTITIES);
         attendees = new DSArray<>(MAX_NUM_ATTENDEES);
-        events = new DSArray<>(MAX_NUM_EVENTS);
+        //events = new DSArray<>(MAX_NUM_EVENTS);
+        events = new DictionaryAVLImpl();
         requestQueue = new PriorityQueue<>(MAX_NUM_REQUESTS, EventRequest.CMP_V);
         rejectedRequests = new LinkedList<>();
         bestEvent = new OrderedVector<>(MAX_NUM_EVENTS, Event.CMP_V);
@@ -355,7 +359,10 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     @Override
     public Event getEvent(String eventId) {
-        return events.get(eventId);
+        return (Event) events.get(eventId);
     }
 
+    public DictionaryAVLImpl getEvents(){
+        return events;
+    }
 }

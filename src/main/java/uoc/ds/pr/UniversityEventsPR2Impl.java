@@ -53,6 +53,17 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     @Override
     public void assignWorker(String workerId, String eventId) throws EventNotFoundException, WorkerNotFoundException, WorkerAlreadyAssignedException {
 
+        Worker worker = workers.get(workerId);
+        if (worker == null) throw new WorkerNotFoundException();
+
+        Event event = (Event) getEvents().get(eventId);
+        if (event == null) throw new EventNotFoundException();
+
+        if (event.isInWorkers(workerId))
+            throw new WorkerAlreadyAssignedException();
+
+        event.setWorker(worker);
+
     }
 
     @Override
@@ -158,7 +169,8 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public int numWorkersByEvent(String id) {
-        return 0;
+        return getEvent(id).numWorkers();
+
     }
 
     @Override

@@ -37,6 +37,10 @@ public class Event implements Comparable<Event> {
 
     private List<Attendee> attenders;
 
+
+    private LinkedList<Worker> workers;
+
+
     public Event(String eventId, Entity entity, String description, UniversityEvents.InstallationType installationType,
                  byte resources, int max, LocalDate startDate, LocalDate endDate, boolean allowRegister) {
         this.eventId = eventId;
@@ -50,6 +54,8 @@ public class Event implements Comparable<Event> {
         this.allowRegister = allowRegister;
         this.enrollments = new QueueArrayImpl<>(MAX_NUM_ENROLLMENT);
         this.ratings = new LinkedList<>();
+
+        this.workers = new LinkedList<>();
 
     }
 
@@ -117,5 +123,25 @@ public class Event implements Comparable<Event> {
     public LocalDate getStartDate() {
         //return startDate.toEpochDay();
         return startDate;
+    }
+
+
+    public boolean isInWorkers(String id) {
+        boolean found = false;
+        Worker worker = null;
+        Iterator<Worker> it = workers.values();
+        while (it.hasNext() && !found) {
+            worker = it.next();
+            found = worker.getWorkerId().equals(id);
+        }
+        return found;
+    }
+
+    public void setWorker(Worker w) {
+        workers.insertEnd(w);
+    }
+
+    public int numWorkers(){
+        return workers.size();
     }
 }
