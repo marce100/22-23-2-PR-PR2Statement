@@ -5,10 +5,12 @@ import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.adt.sequential.Queue;
 import edu.uoc.ds.adt.sequential.QueueArrayImpl;
 import edu.uoc.ds.traversal.Iterator;
+import edu.uoc.ds.traversal.IteratorArrayImpl;
+import edu.uoc.ds.traversal.IteratorTraversalValuesImpl;
 import uoc.ds.pr.UniversityEvents;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.*;
 
 import static uoc.ds.pr.UniversityEvents.MAX_NUM_ENROLLMENT;
 
@@ -33,12 +35,14 @@ public class Event implements Comparable<Event> {
 
     private int numSubstitutes;
 
-    private final Queue<Enrollment> enrollments;
+    //private final Queue<Enrollment> enrollments;
 
     private List<Attendee> attenders;
 
 
     private LinkedList<Worker> workers;
+
+    private Hashtable<String, Enrollment> enrollments;
 
 
     public Event(String eventId, Entity entity, String description, UniversityEvents.InstallationType installationType,
@@ -52,10 +56,11 @@ public class Event implements Comparable<Event> {
         this.startDate = startDate;
         this.endDate = endDate;
         this.allowRegister = allowRegister;
-        this.enrollments = new QueueArrayImpl<>(MAX_NUM_ENROLLMENT);
+        //this.enrollments = new QueueArrayImpl<>(MAX_NUM_ENROLLMENT);
         this.ratings = new LinkedList<>();
 
         this.workers = new LinkedList<>();
+        this.enrollments = new Hashtable<>();
 
     }
 
@@ -73,7 +78,7 @@ public class Event implements Comparable<Event> {
     }
 
     public void addAttendee(Enrollment enrollment) {
-        enrollments.add(enrollment);
+        enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
     }
 
     public Entity getEntity() {
@@ -126,6 +131,7 @@ public class Event implements Comparable<Event> {
     }
 
 
+
     public boolean isInWorkers(String id) {
         boolean found = false;
         Worker worker = null;
@@ -148,4 +154,13 @@ public class Event implements Comparable<Event> {
     public Iterator<Worker> getWorkers(){
         return workers.values();
     }
+
+    public Iterator<Enrollment> getAttendees(){
+        return new IteratorArrayImpl(enrollments.values().toArray(), enrollments.size(), 0);
+    }
+
+
+//public int numAttendees() { return attendees.size(); }
+
+
 }

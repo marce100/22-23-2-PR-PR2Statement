@@ -102,7 +102,14 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<Enrollment> getAttendeesByEvent(String eventId) throws EventNotFoundException, NoAttendeesException {
-        return null;
+        Event event = (Event) getEvents().get(eventId);
+        if (event == null) throw new EventNotFoundException();
+
+        if (event.numAttendees()==0) throw new NoAttendeesException();
+
+        Iterator<Enrollment> iterator= event.getAttendees();
+
+        return iterator;
     }
 
     @Override

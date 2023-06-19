@@ -47,6 +47,11 @@ public class Attendee  {
     public String getSurname() {
         return surname;
     }
+
+    public String getPhone() {
+        return phone;
+    }
+
     public boolean is(String entityId) {
         return id.equals(entityId);
     }
