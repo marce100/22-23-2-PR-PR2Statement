@@ -70,6 +70,7 @@ public class Event implements Comparable<Event> {
     }
 
 
+
     public String getEventId() {
         return eventId;
     }

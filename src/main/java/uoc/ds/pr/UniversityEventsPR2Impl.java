@@ -1,5 +1,6 @@
 package uoc.ds.pr;
 
+import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.exceptions.*;
@@ -142,7 +143,19 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Event getBestEventByNumAttendees() throws NoEventsException {
-        return null;
+
+        DictionaryAVLImpl events = getEvents();
+        if (events.size()==0) throw new NoEventsException();
+
+        Event found = null;
+        Iterator<Event> i = getEvents().values();
+        while (i.hasNext()){
+            Event e = i.next();
+            if (found == null || e.numAttendees() > found.numAttendees())
+                found = e;
+        }
+
+        return found;
     }
 
     @Override
