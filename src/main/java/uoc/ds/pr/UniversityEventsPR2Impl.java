@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
 
     private final DSArray<Role> roles;
+    private final DSArray<Facility> facilities;
 
     private final HashTable<String, Worker> workers;
 
@@ -19,6 +20,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
         roles = new DSArray<>(MAX_NUM_ROLES);
         workers = new HashTable<>();
+        facilities = new DSArray<>(MAX_NUM_FACILITIES);
     }
 
     @Override
@@ -48,7 +50,15 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public void addFacility(String id, String name, String description, InstallationType type) {
-
+        Facility facility = getFacility(id);
+        if (facility != null) {
+            facility.setName(name);
+            facility.setDescription(description);
+            facility.setFacilityType(type);
+        } else {
+            facility = new Facility(id, name, description, type);
+            facilities.put(id, facility);
+        }
     }
 
     @Override
@@ -159,9 +169,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     }
 
     @Override
-    public int numFacilities() {
-        return 0;
-    }
+    public int numFacilities() { return facilities.size(); }
 
     @Override
     public Role getRole(String id) {
@@ -175,7 +183,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Facility getFacility(String id) {
-        return null;
+        return facilities.get(id);
     }
 
     @Override
@@ -184,10 +192,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     }
 
     @Override
-    public int numWorkersByEvent(String id) {
-        return getEvent(id).numWorkers();
-
-    }
+    public int numWorkersByEvent(String id) { return getEvent(id).numWorkers(); }
 
     @Override
     public int numFollowers(String id, RelatedNodeType relatedNodeType) {

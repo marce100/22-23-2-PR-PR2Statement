@@ -1,13 +1,15 @@
 package uoc.ds.pr.model;
 
+import uoc.ds.pr.UniversityEvents;
+
 public class Facility {
 
     private String id;
     private String name;
     private String description;
-    private String type;
+    private UniversityEvents.InstallationType type;
 
-    public Facility(String id, String name, String description, String type) {
+    public Facility(String id, String name, String description, UniversityEvents.InstallationType type) {
         this.setId(id);
         this.setName(name);
         this.setDescription(description);
@@ -38,11 +40,11 @@ public class Facility {
         this.description = description;
     }
 
-    public String getFacilityType() {
+    public UniversityEvents.InstallationType getFacilityType() {
         return type;
     }
 
-    public void setFacilityType(String type) {
+    public void setFacilityType(UniversityEvents.InstallationType type) {
         this.type = type;
     }
 }
