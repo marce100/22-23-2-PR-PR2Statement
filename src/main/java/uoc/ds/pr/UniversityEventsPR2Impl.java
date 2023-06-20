@@ -9,6 +9,7 @@ import uoc.ds.pr.util.DSArray;
 import java.time.LocalDate;
 
 
+
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
 
     private final DSArray<Role> roles;
@@ -98,7 +99,11 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Level getLevelByEntity(String entityId) throws EntityNotFoundException {
-        return null;
+
+        Entity entity = (Entity) getEntities().get(entityId);
+        if (entity == null) throw new EntityNotFoundException();
+
+        return entity.getLevel();
     }
 
     @Override

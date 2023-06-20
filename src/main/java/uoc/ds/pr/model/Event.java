@@ -30,7 +30,7 @@ public class Event implements Comparable<Event> {
     private final byte resources;
 
     private EventRequest request;
-    private final Entity entity;
+    private Entity entity;
     private final boolean allowRegister;
 
 
@@ -200,4 +200,7 @@ public class Event implements Comparable<Event> {
 //public int numAttendees() { return attendees.size(); }
 
 
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
 }

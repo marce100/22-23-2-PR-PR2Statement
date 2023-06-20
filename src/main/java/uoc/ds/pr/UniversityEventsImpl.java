@@ -54,11 +54,13 @@ public class UniversityEventsImpl implements UniversityEvents {
             entity.setDescription(description);
             if (entity.getEntityType() != entityType) {
                 entity = EntityFactory.getEntity(entityType, id, name, description);
+                //System.out.println("UPD "+entity.getLevel()+"    "+entity.numEvents());
                 entities.delete(id);
                 entities.put(id, entity);
             }
         } else {
             entity = EntityFactory.getEntity(entityType, id, name, description);
+            //System.out.println("NEW "+entity.getLevel()+"    "+entity.numEvents());
             entities.put(id, entity);
         }
     }
@@ -141,8 +143,41 @@ public class UniversityEventsImpl implements UniversityEvents {
             Event event = request.getEvent();
             Entity entity = request.getEntity();
 
+
+
+            // Update entity Level
+            int aux = entity.numEvents();
+//            System.out.println("-------------------------------------------------");
+//            System.out.println("----> entity level: "+entity.getLevel()+" "+aux);
+//            if (aux <= 5) entity.setLevel(UniversityEventsPR2.Level.BRONZE);            // Value 1
+//            else if (aux <= 10) entity.setLevel(UniversityEventsPR2.Level.SILVER);      // Value 2
+//            else if (aux <= 15) entity.setLevel(UniversityEventsPR2.Level.GOLD);        // Value 3
+//            else if (aux <= 20) entity.setLevel(UniversityEventsPR2.Level.PLATINUM);    // Value 4
+//            else entity.setLevel(UniversityEventsPR2.Level.DIAMOND);                    // Value 5
+
+            entity.setLevel( (aux <= 5) ? UniversityEventsPR2.Level.BRONZE :
+                             (aux <= 10) ? UniversityEventsPR2.Level.SILVER :
+                             (aux <= 15) ? UniversityEventsPR2.Level.GOLD :
+                             (aux <= 20) ? UniversityEventsPR2.Level.PLATINUM :
+                             UniversityEventsPR2.Level.DIAMOND );
+
+//            System.out.println("----> entity level: "+entity.getLevel()+" "+aux);
+//            event.setEntity(entity);
+
+
+
+//            entities.delete(entity.getId());
+//            entities.put(entity.getId(),entity);
+
+
+
+
             events.put(event.getEventId(), event);
-            entity.addEvent(event);
+            entity.addEvent(event);                    //////////<---------------------------
+
+
+
+
         }
         else {
         	rejectedRequests.insertEnd(request);
@@ -366,7 +401,13 @@ public class UniversityEventsImpl implements UniversityEvents {
         return (Event) events.get(eventId);
     }
 
+    // Method to access from UniversityEventsPR2Impl to the events collection
     public DictionaryAVLImpl getEvents(){
         return events;
+    }
+
+    // Method to access from UniversityEventsPR2Impl to the entities collection
+    public HashTable<String, Entity> getEntities() {
+        return entities;
     }
 }

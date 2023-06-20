@@ -4,6 +4,8 @@ import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.UniversityEvents;
+import uoc.ds.pr.UniversityEventsPR2;
+import uoc.ds.pr.UniversityEventsPR2Impl;
 
 public abstract class Entity {
     private String id;
@@ -11,6 +13,8 @@ public abstract class Entity {
     private String description;
 
     private UniversityEvents.EntityType entityType;
+
+    private UniversityEventsPR2.Level level;
 
     private final List<Event> events;
 
@@ -20,6 +24,7 @@ public abstract class Entity {
         this.setDescription(description);
         this.setEntityType(entityType);
         this.events = new LinkedList<>();
+        this.level = UniversityEventsPR2.Level.BRONZE;
     }
 
     public void setName(String name) {
@@ -54,7 +59,29 @@ public abstract class Entity {
 
 
     public void addEvent(Event event) {
+
+//        System.out.println("-----Añado evento-----------------------------");
+//        System.out.println(events.size());
+//        System.out.println(level);
+
+//            // Update level
+//            int aux = events.size();
+//            if (aux <= 5) setLevel(UniversityEventsPR2.Level.BRONZE);
+//            else if (aux <= 10) setLevel(UniversityEventsPR2.Level.SILVER);
+//            else if (aux <= 15) setLevel(UniversityEventsPR2.Level.GOLD);
+//            else if (aux <= 20) setLevel(UniversityEventsPR2.Level.PLATINUM);
+//            else setLevel(UniversityEventsPR2.Level.DIAMOND);
+
+
         events.insertEnd(event);
+
+
+
+
+//        System.out.println(events.size());
+//        System.out.println(level);
+//        System.out.println("-----Fin añadir evento-----------------------------");
+
     }
 
     public Iterator<Event> events() {
@@ -72,5 +99,13 @@ public abstract class Entity {
     public int getNumAttendees(){
         // Sin implementar
         return 0;
+    }
+
+    public UniversityEventsPR2.Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(UniversityEventsPR2.Level level) {
+        this.level = level;
     }
 }
