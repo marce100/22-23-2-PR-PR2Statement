@@ -2,13 +2,19 @@ package uoc.ds.pr;
 
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
+import edu.uoc.ds.adt.sequential.LinkedList;
+import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.traversal.Iterator;
+import edu.uoc.ds.traversal.IteratorArrayImpl;
 import uoc.ds.pr.exceptions.*;
 import uoc.ds.pr.model.*;
 import uoc.ds.pr.util.DSArray;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
@@ -140,10 +146,17 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     public Iterator<Entity> getBest5Entities() throws NoEntitiesException {
 
         // Devuelve un iterador para recorrer las cinco entidades que más asistentes aportan a la Universidad
-        System.out.println("-------------------------------------------");
 
 
         HashTable<String, Entity> entities = getEntities();
+        DictionaryAVLImpl attendees = getAttendees();
+        DictionaryAVLImpl events = getEvents();
+
+        //If no entity, event, and/or attendee exists , an error will be indicated.
+        if (entities.isEmpty() || attendees.isEmpty() || events.isEmpty()) throw new NoEntitiesException();
+
+
+        System.out.println("-------------------------------------------");
         System.out.println("Total entities: " +entities.size());
         Iterator<Entity> i = entities.values();
         while (i.hasNext()){
@@ -153,38 +166,48 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
                                " Num eventos: " + e.numEvents()
             );
         }
+//        System.out.println("Total attendees: " +attendees.size());
+//        Iterator<Attendee> i2 = attendees.values();
+//        while (i2.hasNext()){
+//            Attendee a = i2.next();
+//            System.out.println("attendeeId: "+ a.getId() +
+//                    " Num eventos: " + a.numEvents()
+//            );
+//        }
+//        System.out.println("Total events: " +events.size());
+//        Iterator<Event> i3 = events.values();
+//        while (i3.hasNext()){
+//            Event e = i3.next();
+//            System.out.println("eventId: "+ e.getEventId() +
+//                    " Num Attendees: " + e.numAttendees() +" Num Substitutes: "+ e.numSubstitutes() + " Entity: " +e.getEntity().getId()
+//            );
+//        }
 
-        DictionaryAVLImpl attendees = getAttendees();
-        System.out.println("Total attendees: " +attendees.size());
-        Iterator<Attendee> i2 = attendees.values();
-        while (i2.hasNext()){
-            Attendee a = i2.next();
-            System.out.println("attendeeId: "+ a.getId() +
-                    " Num eventos: " + a.numEvents()
+
+
+
+
+        // Crear colección temporal para devolver ....................
+        java.util.List<Entity> entityList = new ArrayList<>();
+        Iterator<Entity> it = entities.values();
+        while (it.hasNext()){
+            Entity e = it.next();
+            if (e.getNumAttendees()>0) entityList.add(e);
+        }
+        Collections.sort(entityList, Comparator.comparingInt(Entity::getNumAttendees).reversed());
+
+System.out.println("--");
+        for (Entity entity : entityList) {
+            System.out.println("entitiId: "+ entity.getId() +
+                    " Num asistentes: " + entity.getNumAttendees() +
+                    " Num eventos: " + entity.numEvents()
             );
         }
 
-        DictionaryAVLImpl events = getEvents();
-        System.out.println("Total events: " +events.size());
-        Iterator<Event> i3 = events.values();
-        while (i3.hasNext()){
-            Event e = i3.next();
-            System.out.println("eventId: "+ e.getEventId() +
-                    " Num Attendees: " + e.numAttendees() +" Num Substitutes: "+ e.numSubstitutes() + " Entity: " +e.getEntity().getId()
-            );
-        }
-
-
-        //if (entities.isEmpty()) throw new NoEntitiesException();
-        if (events.isEmpty()) throw new NoEntitiesException();
-
-
-        // Crear colección temporal para devolver ....................
 
 
 
-
-        return entities.values();
+        return new IteratorArrayImpl(entityList.toArray(), entityList.size(), 0);
     }
 
     @Override
