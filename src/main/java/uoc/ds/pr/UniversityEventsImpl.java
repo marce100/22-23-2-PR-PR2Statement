@@ -3,6 +3,7 @@ package uoc.ds.pr;
 import java.time.LocalDate;
 
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
+import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.adt.nonlinear.PriorityQueue;
 
 import edu.uoc.ds.adt.sequential.LinkedList;
@@ -19,7 +20,8 @@ import uoc.ds.pr.util.OrderedVector;
 
 public class UniversityEventsImpl implements UniversityEvents {
 
-    private final DSArray<Entity> entities;
+    //private final DSArray<Entity> entities;
+    private final HashTable<String, Entity> entities;
     private final DSArray<Attendee> attendees;
     //private final DSArray<Event> events;
     private final DictionaryAVLImpl events;
@@ -33,7 +35,8 @@ public class UniversityEventsImpl implements UniversityEvents {
     private final OrderedVector<Event> bestEvent;
 
     public UniversityEventsImpl() {
-        entities = new DSArray<>(MAX_NUM_ENTITIES);
+        //entities = new DSArray<>(MAX_NUM_ENTITIES);
+        entities = new HashTable<>();
         attendees = new DSArray<>(MAX_NUM_ATTENDEES);
         //events = new DSArray<>(MAX_NUM_EVENTS);
         events = new DictionaryAVLImpl();
@@ -51,7 +54,8 @@ public class UniversityEventsImpl implements UniversityEvents {
             entity.setDescription(description);
             if (entity.getEntityType() != entityType) {
                 entity = EntityFactory.getEntity(entityType, id, name, description);
-                entities.update(id, entity);
+                entities.delete(id);
+                entities.put(id, entity);
             }
         } else {
             entity = EntityFactory.getEntity(entityType, id, name, description);
