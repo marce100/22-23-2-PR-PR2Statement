@@ -203,4 +203,8 @@ public class Event implements Comparable<Event> {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+
+    public HashTable<String, Enrollment> getEnrollments() {
+        return enrollments;
+    }
 }
