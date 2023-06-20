@@ -10,7 +10,12 @@ import edu.uoc.ds.traversal.IteratorTraversalValuesImpl;
 import uoc.ds.pr.UniversityEvents;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+
+
+import edu.uoc.ds.adt.nonlinear.HashTable;
+
 
 import static uoc.ds.pr.UniversityEvents.MAX_NUM_ENROLLMENT;
 
@@ -42,7 +47,7 @@ public class Event implements Comparable<Event> {
 
     private LinkedList<Worker> workers;
 
-    private Hashtable<String, Enrollment> enrollments;
+    private HashTable<String, Enrollment> enrollments;
 
 
     public Event(String eventId, Entity entity, String description, UniversityEvents.InstallationType installationType,
@@ -60,7 +65,7 @@ public class Event implements Comparable<Event> {
         this.ratings = new LinkedList<>();
 
         this.workers = new LinkedList<>();
-        this.enrollments = new Hashtable<>();
+        this.enrollments = new HashTable<>();
 
     }
 
@@ -79,6 +84,33 @@ public class Event implements Comparable<Event> {
 
     public void addAttendee(Enrollment enrollment) {
         enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
+
+        if (this.eventId=="EV-100") {
+            System.out.println("--- EV-100 ------------------");
+            Iterator<Enrollment> i = enrollments.values();
+            while (i.hasNext()) {
+                Enrollment e = i.next();
+                System.out.println(e.getAttendee().getId());
+            }
+            System.out.println("-----------------------------");
+
+//            Collection<Enrollment> allValuesCollection = enrollments.;
+//
+//
+//            for (Enrollment eachList : allValuesCollection ) {
+//                System.out.println(
+//                        eachList.getAttendee().getId()+" | "+
+//                        eachList.getAttendee().getPhone()+" | "+
+//                        eachList.getAttendee().isInEvent("EV-100" )+" | "+
+//                        eachList.getAttendee().numEvents()+" | "+
+//                        eachList.isSubstitute()+" | "                        +getStartDate());
+//            }
+
+
+        }
+
+
+
     }
 
     public Entity getEntity() {
@@ -156,7 +188,12 @@ public class Event implements Comparable<Event> {
     }
 
     public Iterator<Enrollment> getAttendees(){
-        return new IteratorArrayImpl(enrollments.values().toArray(), enrollments.size(), 0);
+
+        //Collection<Enrollment> allValuesCollection = enrollments.values();
+        //return (Iterator<Enrollment>) allValuesCollection.iterator();
+
+        //return new IteratorArrayImpl(enrollments.values().toArray(), enrollments.size(), 0);
+        return enrollments.values();
     }
 
 

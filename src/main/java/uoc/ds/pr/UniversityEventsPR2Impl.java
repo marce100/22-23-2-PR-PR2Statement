@@ -1,23 +1,24 @@
 package uoc.ds.pr;
 
+import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.exceptions.*;
 import uoc.ds.pr.model.*;
 import uoc.ds.pr.util.DSArray;
 
 import java.time.LocalDate;
-import java.util.Hashtable;
+
 
 public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements UniversityEventsPR2 {
 
     private final DSArray<Role> roles;
 
-    private final Hashtable<String, Worker> workers;
+    private final HashTable<String, Worker> workers;
 
     public UniversityEventsPR2Impl() {
 
         roles = new DSArray<>(MAX_NUM_ROLES);
-        workers = new Hashtable<>();
+        workers = new HashTable<>();
     }
 
     @Override
