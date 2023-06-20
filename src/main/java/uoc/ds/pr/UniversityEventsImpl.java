@@ -22,7 +22,8 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     //private final DSArray<Entity> entities;
     private final HashTable<String, Entity> entities;
-    private final DSArray<Attendee> attendees;
+    //private final DSArray<Attendee> attendees;
+    private final DictionaryAVLImpl attendees;
     //private final DSArray<Event> events;
     private final DictionaryAVLImpl events;
 
@@ -37,7 +38,8 @@ public class UniversityEventsImpl implements UniversityEvents {
     public UniversityEventsImpl() {
         //entities = new DSArray<>(MAX_NUM_ENTITIES);
         entities = new HashTable<>();
-        attendees = new DSArray<>(MAX_NUM_ATTENDEES);
+        //attendees = new DSArray<>(MAX_NUM_ATTENDEES);
+        attendees = new DictionaryAVLImpl<>();
         //events = new DSArray<>(MAX_NUM_EVENTS);
         events = new DictionaryAVLImpl();
         requestQueue = new PriorityQueue<>(MAX_NUM_REQUESTS, EventRequest.CMP_V);
@@ -108,36 +110,14 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     public EventRequest updateEventRequest(Status status, LocalDate date, String message) throws NoEventRequestException {
 
-
-
-        /*aqui*
-        System.out.println("update request");
-        System.out.println("---------------------------");
-        for (EventRequest element : requestQueue) {
-            System.out.println(element.getRequestId()+"    "+element.getDateStatus());
-        }
-        System.out.println("---------------------------");
-        /*aqui*/
-
-
-
-        //System.out.println("tamaño cola: "+requestQueue.size());
-
         if (requestQueue.size() == 0) throw new NoEventRequestException();
         EventRequest request = requestQueue.poll();
         if (request  == null) {
         	throw new NoEventRequestException();
         }
 
-
-        //System.out.println("Update request");
         request.update(status, date, message);
 
-        //requestQueue.remove(request);
-        //requestQueue.add(request);
-        //request = requestQueue.poll();
-
-        //System.out.println("tamaño cola: "+requestQueue.size());
 
         if (request.isEnabled()) {
             Event event = request.getEvent();
@@ -147,33 +127,22 @@ public class UniversityEventsImpl implements UniversityEvents {
 
             // Update entity Level
             int aux = entity.numEvents();
-//            System.out.println("-------------------------------------------------");
-//            System.out.println("----> entity level: "+entity.getLevel()+" "+aux);
-//            if (aux <= 5) entity.setLevel(UniversityEventsPR2.Level.BRONZE);            // Value 1
-//            else if (aux <= 10) entity.setLevel(UniversityEventsPR2.Level.SILVER);      // Value 2
-//            else if (aux <= 15) entity.setLevel(UniversityEventsPR2.Level.GOLD);        // Value 3
-//            else if (aux <= 20) entity.setLevel(UniversityEventsPR2.Level.PLATINUM);    // Value 4
-//            else entity.setLevel(UniversityEventsPR2.Level.DIAMOND);                    // Value 5
-
             entity.setLevel( (aux <= 5) ? UniversityEventsPR2.Level.BRONZE :
                              (aux <= 10) ? UniversityEventsPR2.Level.SILVER :
                              (aux <= 15) ? UniversityEventsPR2.Level.GOLD :
                              (aux <= 20) ? UniversityEventsPR2.Level.PLATINUM :
                              UniversityEventsPR2.Level.DIAMOND );
 
-//            System.out.println("----> entity level: "+entity.getLevel()+" "+aux);
-//            event.setEntity(entity);
-
-
-
-//            entities.delete(entity.getId());
-//            entities.put(entity.getId(),entity);
 
 
 
 
             events.put(event.getEventId(), event);
             entity.addEvent(event);                    //////////<---------------------------
+
+
+            //entities.delete(entity.getId());
+            //entities.put(entity.getId(),entity);
 
 
 
@@ -183,25 +152,7 @@ public class UniversityEventsImpl implements UniversityEvents {
         	rejectedRequests.insertEnd(request);
         }
 
-        /*aqui
-        System.out.println("fin update");
-        System.out.println("---------------------------");
-        for (EventRequest element : requestQueue) {
-            System.out.println(element.getRequestId()+"    "+element.getDateStatus());
-        }
-        System.out.println("---------------------------");
-        /*aqui*/
 
-        //requestQueue.peek()request); ///////////////////añadir otra vez
-
-
-        /*aqui
-        Iterator<EventRequest> it = requestQueue.iterator();
-        while (it.hasNext()){
-            EventRequest eventRequest = it.next();
-            System.out.println(eventRequest.getRequestId());
-        }
-        /*aqui*/
 
         return request;
     }
@@ -222,7 +173,7 @@ public class UniversityEventsImpl implements UniversityEvents {
             throw new AttendeeAlreadyInEventException();
         }
 
-            if (!event.isFull()) {
+        if (!event.isFull()) {
             event.addAttendee(new Enrollment(attendee));
         }
         else {
@@ -233,6 +184,11 @@ public class UniversityEventsImpl implements UniversityEvents {
         attendee.addEvent(event);
 
         updateMostActiveAttendee(attendee);
+
+//System.out.println("SignUp "+attendeeId+" "+eventId);
+
+
+
     }
 
     public double getPercentageRejectedRequests() {
@@ -392,7 +348,7 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     @Override
     public Attendee getAttendee(String attendeeId) {
-        Attendee attendee = attendees.get(attendeeId);
+        Attendee attendee = (Attendee) attendees.get(attendeeId);
         return attendee;
     }
 
@@ -409,5 +365,9 @@ public class UniversityEventsImpl implements UniversityEvents {
     // Method to access from UniversityEventsPR2Impl to the entities collection
     public HashTable<String, Entity> getEntities() {
         return entities;
+    }
+
+    public DictionaryAVLImpl getAttendees() {
+        return attendees;
     }
 }

@@ -85,32 +85,7 @@ public class Event implements Comparable<Event> {
 
     public void addAttendee(Enrollment enrollment) {
         enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
-
-//        if (this.eventId=="EV-100") {
-//            System.out.println("--- EV-100 ------------------");
-//            Iterator<Enrollment> i = enrollments.values();
-//            while (i.hasNext()) {
-//                Enrollment e = i.next();
-//                System.out.println(e.getAttendee().getId());
-//            }
-//            System.out.println("-----------------------------");
-//
-////            Collection<Enrollment> allValuesCollection = enrollments.;
-////
-////
-////            for (Enrollment eachList : allValuesCollection ) {
-////                System.out.println(
-////                        eachList.getAttendee().getId()+" | "+
-////                        eachList.getAttendee().getPhone()+" | "+
-////                        eachList.getAttendee().isInEvent("EV-100" )+" | "+
-////                        eachList.getAttendee().numEvents()+" | "+
-////                        eachList.isSubstitute()+" | "                        +getStartDate());
-////            }
-//
-//
-//        }
-
-
+        //System.out.println(enrollments.size());
 
     }
 

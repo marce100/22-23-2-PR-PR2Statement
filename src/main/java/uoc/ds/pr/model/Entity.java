@@ -59,29 +59,7 @@ public abstract class Entity {
 
 
     public void addEvent(Event event) {
-
-//        System.out.println("-----Añado evento-----------------------------");
-//        System.out.println(events.size());
-//        System.out.println(level);
-
-//            // Update level
-//            int aux = events.size();
-//            if (aux <= 5) setLevel(UniversityEventsPR2.Level.BRONZE);
-//            else if (aux <= 10) setLevel(UniversityEventsPR2.Level.SILVER);
-//            else if (aux <= 15) setLevel(UniversityEventsPR2.Level.GOLD);
-//            else if (aux <= 20) setLevel(UniversityEventsPR2.Level.PLATINUM);
-//            else setLevel(UniversityEventsPR2.Level.DIAMOND);
-
-
         events.insertEnd(event);
-
-
-
-
-//        System.out.println(events.size());
-//        System.out.println(level);
-//        System.out.println("-----Fin añadir evento-----------------------------");
-
     }
 
     public Iterator<Event> events() {
@@ -97,8 +75,13 @@ public abstract class Entity {
     }
 
     public int getNumAttendees(){
-        // Sin implementar
-        return 0;
+        int total = 0;
+        Iterator<Event> i = events.values();
+        while (i.hasNext()){
+            Event event = i.next();
+            total += event.numAttendees() + event.numSubstitutes();
+        }
+        return total;
     }
 
     public UniversityEventsPR2.Level getLevel() {

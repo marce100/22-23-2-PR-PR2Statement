@@ -138,14 +138,60 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<Entity> getBest5Entities() throws NoEntitiesException {
-        return null;
+
+        // Devuelve un iterador para recorrer las cinco entidades que más asistentes aportan a la Universidad
+        System.out.println("-------------------------------------------");
+
+
+        HashTable<String, Entity> entities = getEntities();
+        System.out.println("Total entities: " +entities.size());
+        Iterator<Entity> i = entities.values();
+        while (i.hasNext()){
+            Entity e = i.next();
+            System.out.println("entitiId: "+ e.getId() +
+                               " Num asistentes: " + e.getNumAttendees() +
+                               " Num eventos: " + e.numEvents()
+            );
+        }
+
+        DictionaryAVLImpl attendees = getAttendees();
+        System.out.println("Total attendees: " +attendees.size());
+        Iterator<Attendee> i2 = attendees.values();
+        while (i2.hasNext()){
+            Attendee a = i2.next();
+            System.out.println("attendeeId: "+ a.getId() +
+                    " Num eventos: " + a.numEvents()
+            );
+        }
+
+        DictionaryAVLImpl events = getEvents();
+        System.out.println("Total events: " +events.size());
+        Iterator<Event> i3 = events.values();
+        while (i3.hasNext()){
+            Event e = i3.next();
+            System.out.println("eventId: "+ e.getEventId() +
+                    " Num Attendees: " + e.numAttendees() +" Num Substitutes: "+ e.numSubstitutes() + " Entity: " +e.getEntity().getId()
+            );
+        }
+
+
+        //if (entities.isEmpty()) throw new NoEntitiesException();
+        if (events.isEmpty()) throw new NoEntitiesException();
+
+
+        // Crear colección temporal para devolver ....................
+
+
+
+
+        return entities.values();
     }
 
     @Override
     public Event getBestEventByNumAttendees() throws NoEventsException {
 
         DictionaryAVLImpl events = getEvents();
-        if (events.size()==0) throw new NoEventsException();
+        if (events.isEmpty()) throw new NoEventsException();
 
         Event found = null;
         Iterator<Event> i = getEvents().values();
