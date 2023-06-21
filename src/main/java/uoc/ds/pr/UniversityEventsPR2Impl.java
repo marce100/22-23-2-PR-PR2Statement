@@ -4,6 +4,7 @@ import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
+import edu.uoc.ds.exceptions.InvalidPositionException;
 import edu.uoc.ds.traversal.Iterator;
 import edu.uoc.ds.traversal.IteratorArrayImpl;
 import uoc.ds.pr.exceptions.*;
@@ -115,7 +116,23 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<Attendee> getSubstitutesByEvent(String eventId) throws EventNotFoundException, NoSubstitutesException {
-        return null;
+
+        DictionaryAVLImpl events = getEvents();
+        Event event = (Event) events.get(eventId);
+
+        if (event == null) throw new EventNotFoundException();
+        if (event.numSubstitutes()==0) throw new NoSubstitutesException();
+
+        List<Attendee> attendees = new LinkedList<>();
+        HashTable<String, Enrollment> enrollments = event.getEnrollments();
+        Iterator<Enrollment> iterator= enrollments.values();
+        while (iterator.hasNext()){
+            Enrollment enrollment = iterator.next();
+            Attendee attendee = enrollment.getAttendee();
+            if (enrollment.isSubstitute()) attendees.insertBeginning(attendee);
+        }
+
+        return attendees.values();
     }
 
     @Override

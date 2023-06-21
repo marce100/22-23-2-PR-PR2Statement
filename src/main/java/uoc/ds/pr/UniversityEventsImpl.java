@@ -98,19 +98,16 @@ public class UniversityEventsImpl implements UniversityEvents {
     public EventRequest updateEventRequest(Status status, LocalDate date, String message) throws NoEventRequestException {
 
         if (requestQueue.size() == 0) throw new NoEventRequestException();
+
         EventRequest request = requestQueue.poll();
-        if (request  == null) {
-        	throw new NoEventRequestException();
-        }
+
+        if (request  == null) throw new NoEventRequestException();
 
         request.update(status, date, message);
-
 
         if (request.isEnabled()) {
             Event event = request.getEvent();
             Entity entity = request.getEntity();
-
-
 
             // Update entity Level
             int aux = entity.numEvents();
@@ -120,34 +117,18 @@ public class UniversityEventsImpl implements UniversityEvents {
                              (aux <= 20) ? UniversityEventsPR2.Level.PLATINUM :
                              UniversityEventsPR2.Level.DIAMOND );
 
-
-
-
-
             events.put(event.getEventId(), event);
-            entity.addEvent(event);                    //////////<---------------------------
+            entity.addEvent(event);
 
-
-            //entities.delete(entity.getId());
-            //entities.put(entity.getId(),entity);
-
-
-
-
-        }
-        else {
+        } else {
         	rejectedRequests.insertEnd(request);
         }
-
-
 
         return request;
     }
 
     @Override
     public void signUpEvent(String attendeeId, String eventId) throws AttendeeNotFoundException, EventNotFoundException, NotAllowedException, AttendeeAlreadyInEventException {
-
-
 
         Event event = getEvent(eventId);
         if (event==null) {
@@ -169,8 +150,7 @@ public class UniversityEventsImpl implements UniversityEvents {
 
         if (!event.isFull()) {
             event.addAttendee(new Enrollment(attendee));
-        }
-        else {
+        } else {
             event.addAttendee(new Enrollment(attendee, Enrollment.SUBTITUTE));
             event.incSubstitute();
         }
@@ -178,10 +158,6 @@ public class UniversityEventsImpl implements UniversityEvents {
         attendee.addEvent(event);
 
         updateMostActiveAttendee(attendee);
-
-
-
-
 
     }
 
