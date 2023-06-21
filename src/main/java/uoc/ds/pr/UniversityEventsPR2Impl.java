@@ -45,16 +45,61 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public void addWorker(String workerId, String name, String surname, LocalDate birthDay, String roleId) {
+
+
+        System.out.println("Antes----------------------------------------");
+        Iterator<Role> i= roles.values();
+        while (i.hasNext()){
+            Role r=i.next();
+            System.out.print(r.getId()+ "  Num workers: "+r.getWorkers().size()+"  ");
+
+            Iterator<Worker> iw= roles.get(r.getId()).getWorkers().values();
+            while (iw.hasNext()){
+                Worker workerXX= iw.next();
+                System.out.print(workerXX.getWorkerId()+" ");
+            }
+            System.out.println("");
+        }
+
+
+
+
+
+
         Worker worker = getWorker(workerId);
         if (worker != null) {
             worker.setName(name);
             worker.setSurname(surname);
             worker.setBirthday(birthDay);
             worker.setRoleId(roleId);
+            worker.setRole(getRole(roleId));
+
+            getRole(roleId).updateWorker(worker);
+
         } else {
             worker = new Worker(workerId, name, surname, birthDay, roleId);
+            worker.setRole(getRole(roleId));
+
+            getRole(roleId).addWorker(worker);
             workers.put(workerId, worker);
+
+
         }
+
+        System.out.println("Después--------------------------------------");
+        Iterator<Role> i1= roles.values();
+        while (i1.hasNext()){
+            Role r=i1.next();
+            System.out.print(r.getId()+ "  Num workers: "+r.getWorkers().size()+"  ");
+
+            Iterator<Worker> iw1= roles.get(r.getId()).getWorkers().values();
+            while (iw1.hasNext()){
+                Worker workerXX= iw1.next();
+                System.out.print(workerXX.getWorkerId()+" ");
+            }
+            System.out.println("");
+        }
+
     }
 
     @Override
@@ -102,7 +147,12 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<Worker> getWorkersByRole(String roleId) throws NoWorkersException {
-        return null;
+
+        LinkedList<Worker> workers = roles.get(roleId).getWorkers();
+
+        if (workers.isEmpty()) throw new NoWorkersException();
+
+        return workers.values();
     }
 
     @Override
@@ -255,7 +305,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public int numWorkersByRole(String id) {
-        return 0;
+        return roles.get(id).getWorkers().size();
     }
 
     @Override

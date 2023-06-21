@@ -18,6 +18,7 @@ public class Worker {
         this.setSurname(surname);
         this.setBirthday(birthday);
         this.setRoleId(roleId);
+
     }
 
     public String getWorkerId() {
@@ -64,13 +65,15 @@ public class Worker {
         this.roleId = roleId;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
 
 
 
 
-
-    /*
+/*
     *
     *
     @Override
