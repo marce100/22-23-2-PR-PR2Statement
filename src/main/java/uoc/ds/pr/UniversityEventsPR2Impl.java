@@ -1,5 +1,6 @@
 package uoc.ds.pr;
 
+import edu.uoc.ds.adt.helpers.Position;
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.adt.sequential.LinkedList;
@@ -7,6 +8,7 @@ import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.exceptions.InvalidPositionException;
 import edu.uoc.ds.traversal.Iterator;
 import edu.uoc.ds.traversal.IteratorArrayImpl;
+import edu.uoc.ds.traversal.Traversal;
 import uoc.ds.pr.exceptions.*;
 import uoc.ds.pr.model.*;
 import uoc.ds.pr.util.DSArray;
@@ -74,7 +76,26 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
             worker.setRoleId(roleId);
             worker.setRole(getRole(roleId));
 
-            getRole(roleId).updateWorker(worker);
+            getRole(roleId).deleteWorker(worker); //////////////////esto no funciona
+
+
+
+
+
+
+
+            getRole(roleId).addWorker(worker);
+
+
+
+
+            Iterator<Worker> i1 = getRole(roleId).getWorkers().values();
+            System.out.print(roleId+ "..:   ");
+            while (i1.hasNext()){
+                Worker w= i1.next();
+                System.out.print( w.getWorkerId()+" ");
+            }
+            System.out.println("");
 
         } else {
             worker = new Worker(workerId, name, surname, birthDay, roleId);
@@ -82,6 +103,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
             getRole(roleId).addWorker(worker);
             workers.put(workerId, worker);
+
 
 
         }
