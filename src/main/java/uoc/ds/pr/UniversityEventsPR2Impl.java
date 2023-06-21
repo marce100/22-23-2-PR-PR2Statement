@@ -166,48 +166,65 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
                                " Num eventos: " + e.numEvents()
             );
         }
-//        System.out.println("Total attendees: " +attendees.size());
-//        Iterator<Attendee> i2 = attendees.values();
-//        while (i2.hasNext()){
-//            Attendee a = i2.next();
-//            System.out.println("attendeeId: "+ a.getId() +
-//                    " Num eventos: " + a.numEvents()
-//            );
-//        }
-//        System.out.println("Total events: " +events.size());
-//        Iterator<Event> i3 = events.values();
-//        while (i3.hasNext()){
-//            Event e = i3.next();
-//            System.out.println("eventId: "+ e.getEventId() +
-//                    " Num Attendees: " + e.numAttendees() +" Num Substitutes: "+ e.numSubstitutes() + " Entity: " +e.getEntity().getId()
-//            );
-//        }
-
-
-
-
-
-        // Crear colección temporal para devolver ....................
-        java.util.List<Entity> entityList = new ArrayList<>();
-        Iterator<Entity> it = entities.values();
-        while (it.hasNext()){
-            Entity e = it.next();
-            if (e.getNumAttendees()>0) entityList.add(e);
+        System.out.println("Total attendees: " +attendees.size());
+        Iterator<Attendee> i2 = attendees.values();
+        while (i2.hasNext()){
+            Attendee a = i2.next();
+            System.out.println("attendeeId: "+ a.getId() +
+                    " Num eventos: " + a.numEvents()
+            );
         }
-        Collections.sort(entityList, Comparator.comparingInt(Entity::getNumAttendees).reversed());
-
-System.out.println("--");
-        for (Entity entity : entityList) {
-            System.out.println("entitiId: "+ entity.getId() +
-                    " Num asistentes: " + entity.getNumAttendees() +
-                    " Num eventos: " + entity.numEvents()
+        System.out.println("Total events: " +events.size());
+        Iterator<Event> i3 = events.values();
+        while (i3.hasNext()){
+            Event e = i3.next();
+            System.out.println("eventId: "+ e.getEventId() +
+                    " Num Attendees: " + e.numAttendees() +" Num Substitutes: "+ e.numSubstitutes() + " Entity: " +e.getEntity().getId()
             );
         }
 
 
 
 
-        return new IteratorArrayImpl(entityList.toArray(), entityList.size(), 0);
+
+//        // Crear colección temporal para devolver ....................
+//        java.util.List<Entity> entityList = new ArrayList<>();
+//        Iterator<Entity> it = entities.values();
+//        while (it.hasNext()){
+//            Entity e = it.next();
+//            if (e.getNumAttendees()>0) entityList.add(e);
+//        }
+//        Collections.sort(entityList, Comparator.comparingInt(Entity::getNumAttendees).reversed());
+//
+//        System.out.println("--");
+//        for (Entity entity : entityList) {
+//            System.out.println("entitiId: "+ entity.getId() +
+//                    " Num asistentes: " + entity.getNumAttendees() +
+//                    " Num eventos: " + entity.numEvents()
+//            );
+//        }
+//        return new IteratorArrayImpl(entityList.toArray(), entityList.size(), 0);
+
+
+        HashTable<String, Entity> entities2 = new HashTable<>();
+        Iterator iterator = entities.values();
+        while (iterator.hasNext() && entities2.size()<5){
+            Entity entity = (Entity) iterator.next();
+            if (entity.getNumAttendees()>0) {
+                entities2.put(entity.getNumAttendees() + "", entity);
+                System.out.println(entity.getNumAttendees());
+            }
+        }
+        System.out.println("---");
+        Iterator i0 = entities2.values();
+        while (i0.hasNext()){
+            Entity entity = (Entity) i0.next();
+            System.out.println( "entitiId: "+ entity.getId() + " Num asistentes: " + entity.getNumAttendees() + " Num eventos: " + entity.numEvents() );
+        }
+        return entities2.values();
+
+
+
     }
 
     @Override

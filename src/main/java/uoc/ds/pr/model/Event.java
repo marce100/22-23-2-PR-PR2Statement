@@ -84,6 +84,7 @@ public class Event implements Comparable<Event> {
     }
 
     public void addAttendee(Enrollment enrollment) {
+        System.out.print(" "+entity.getId()+" ");
         enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
         //System.out.println(enrollments.size());
 

@@ -159,33 +159,46 @@ public class UniversityEventsImpl implements UniversityEvents {
 
     @Override
     public void signUpEvent(String attendeeId, String eventId) throws AttendeeNotFoundException, EventNotFoundException, NotAllowedException, AttendeeAlreadyInEventException {
+
+        System.out.print("SignUp "+attendeeId+" "+eventId);
+
         Event event = getEvent(eventId);
-        if (event==null) throw new EventNotFoundException();
+        if (event==null) {
+            System.out.println(" error");
+            throw new EventNotFoundException();
+        }
 
         Attendee attendee = getAttendee(attendeeId);
-        if (attendee==null) throw new AttendeeNotFoundException();
+        if (attendee==null) {
+            System.out.println(" error");
+            throw new AttendeeNotFoundException();
+        }
 
         if (!event.isAllowedRegister()) {
+            System.out.println(" error");
             throw new NotAllowedException();
         }
 
         if (attendee.isInEvent(eventId)) {
+            System.out.println(" error");
             throw new AttendeeAlreadyInEventException();
         }
 
         if (!event.isFull()) {
             event.addAttendee(new Enrollment(attendee));
+            System.out.println(" normal");
         }
         else {
             event.addAttendee(new Enrollment(attendee, Enrollment.SUBTITUTE));
             event.incSubstitute();
+            System.out.println(" subst");
         }
 
         attendee.addEvent(event);
 
         updateMostActiveAttendee(attendee);
 
-//System.out.println("SignUp "+attendeeId+" "+eventId);
+
 
 
 
