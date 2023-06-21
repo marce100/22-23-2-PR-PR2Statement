@@ -109,11 +109,9 @@ public class Attendee  {
 
     public boolean isInEvent(String eventId) {
         boolean found = false;
-        Event event = null;
         Iterator<Event> it = events.values();
         while (it.hasNext() && !found) {
-            event = it.next();
-            found = event.getEventId().equals(eventId);
+            found = it.next().getEventId().equals(eventId);
         }
         return found;
     }

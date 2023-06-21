@@ -84,7 +84,8 @@ public class Event implements Comparable<Event> {
     }
 
     public void addAttendee(Enrollment enrollment) {
-        System.out.print(" "+entity.getId()+" ");
+        //System.out.print(" "+entity.getId()+" ");
+        //System.out.println("voy a añadir: "+enrollment.getAttendee().getPhone());
         enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
         //System.out.println(enrollments.size());
 
@@ -143,11 +144,9 @@ public class Event implements Comparable<Event> {
 
     public boolean isInWorkers(String id) {
         boolean found = false;
-        Worker worker = null;
         Iterator<Worker> it = workers.values();
         while (it.hasNext() && !found) {
-            worker = it.next();
-            found = worker.getWorkerId().equals(id);
+            found = it.next().getWorkerId().equals(id);
         }
         return found;
     }

@@ -337,13 +337,13 @@ public class UniversityEventsPR2Test extends UniversityEventsPR1Test {
 
         Assert.assertFalse(it.hasNext());
 
-        universityEvents.addAttendee("idAttendee10", "Julio", "Sallent", createLocalDate("07-01-1932"), "+34 666772811");
-        universityEvents.addAttendee("idAttendee20", "Sara", "Casals", createLocalDate("09-07-1988"), "+34 615872234");
-        universityEvents.addAttendee("idAttendee30", "Clement", "Padró", createLocalDate("02-06-1992"), "+34 6150562");
-        universityEvents.addAttendee("idAttendee40", "Marin", "Padró", createLocalDate("15-01-2005"), "+34 6872223");
-        universityEvents.addAttendee("idAttendee50", "Jose Maria", "Marieta", createLocalDate("23-04-2010"), "+34 76222234");
-        universityEvents.addAttendee("idAttendee60", "Borja", "Garcia", createLocalDate("23-04-2001"), "934699982");
-        universityEvents.addAttendee("idAttendee70", "Cristian", "Gimenez", createLocalDate("23-03-2005"), "937776988");
+        universityEvents.addAttendee("idAttendee10", "Julio", "Sallent", createLocalDate("07-01-1932"), "+33 666772811");
+        universityEvents.addAttendee("idAttendee20", "Sara", "Casals", createLocalDate("09-07-1988"), "+33 615872234");
+        universityEvents.addAttendee("idAttendee30", "Clement", "Padró", createLocalDate("02-06-1992"), "+33 6150562");
+        universityEvents.addAttendee("idAttendee40", "Marin", "Padró", createLocalDate("15-01-2005"), "+33 6872223");
+        universityEvents.addAttendee("idAttendee50", "Jose Maria", "Marieta", createLocalDate("23-04-2010"), "+33 76222234");
+        universityEvents.addAttendee("idAttendee60", "Borja", "Garcia", createLocalDate("23-04-2001"), "964699982");
+        universityEvents.addAttendee("idAttendee70", "Cristian", "Gimenez", createLocalDate("23-03-2005"), "967776988");
 
         this.universityEvents.signUpEvent("idAttendee10", "EV-500");
         this.universityEvents.signUpEvent("idAttendee20", "EV-500");

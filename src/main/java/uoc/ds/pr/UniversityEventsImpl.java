@@ -56,13 +56,11 @@ public class UniversityEventsImpl implements UniversityEvents {
             entity.setDescription(description);
             if (entity.getEntityType() != entityType) {
                 entity = EntityFactory.getEntity(entityType, id, name, description);
-                //System.out.println("UPD "+entity.getLevel()+"    "+entity.numEvents());
                 entities.delete(id);
                 entities.put(id, entity);
             }
         } else {
             entity = EntityFactory.getEntity(entityType, id, name, description);
-            //System.out.println("NEW "+entity.getLevel()+"    "+entity.numEvents());
             entities.put(id, entity);
         }
     }
@@ -92,19 +90,8 @@ public class UniversityEventsImpl implements UniversityEvents {
         Entity entity = getEntity(entityId);
         if (entity == null) throw new EntityNotFoundException();
 
-        //System.out.println("Añadir request");
         requestQueue.add(new EventRequest(id, eventId, entity, description, installationType, resources, max, startDate, endDate, allowRegister));
 
-
-//        /*aqui*/
-//        System.out.println("---------------------------");
-//        Iterator i= requestQueue.values();
-//        while (i.hasNext()) {
-//            EventRequest e= (EventRequest) i.next();
-//            System.out.println(e.getRequestId()+"    "+e.getEvent().getStartDate());
-//        }
-//        System.out.println("---------------------------");
-//        /*aqui*/
     }
 
 
@@ -160,38 +147,32 @@ public class UniversityEventsImpl implements UniversityEvents {
     @Override
     public void signUpEvent(String attendeeId, String eventId) throws AttendeeNotFoundException, EventNotFoundException, NotAllowedException, AttendeeAlreadyInEventException {
 
-        System.out.print("SignUp "+attendeeId+" "+eventId);
+
 
         Event event = getEvent(eventId);
         if (event==null) {
-            System.out.println(" error");
             throw new EventNotFoundException();
         }
 
         Attendee attendee = getAttendee(attendeeId);
         if (attendee==null) {
-            System.out.println(" error");
             throw new AttendeeNotFoundException();
         }
 
         if (!event.isAllowedRegister()) {
-            System.out.println(" error");
             throw new NotAllowedException();
         }
 
         if (attendee.isInEvent(eventId)) {
-            System.out.println(" error");
             throw new AttendeeAlreadyInEventException();
         }
 
         if (!event.isFull()) {
             event.addAttendee(new Enrollment(attendee));
-            System.out.println(" normal");
         }
         else {
             event.addAttendee(new Enrollment(attendee, Enrollment.SUBTITUTE));
             event.incSubstitute();
-            System.out.println(" subst");
         }
 
         attendee.addEvent(event);
