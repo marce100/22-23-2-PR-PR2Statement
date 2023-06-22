@@ -291,36 +291,68 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         System.out.println("--------------------------");
         System.out.println(followerId);
         System.out.println("--------------------------");
-
-        System.out.println("Anterior: ");
-
-
-
-        Iterator<Edge<String, Follower>> it2 = followers.edges();
-
-
-        Follower anterior;
-
-        while (it2.hasNext()){
-            Follower follower = it2.
-            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
-                anterior=follower.
-        }
-
-        LinkedList<DSNode> aux = new LinkedList<>();
+        System.out.print("Anterior: ");
+        Follower previus= null;
         Iterator<Vertex<Follower>> it = followers.vertexs();
         while (it.hasNext()){
             Follower follower = it.next().getValue();
-            System.out.println(" Follower: "+follower.getFollowerId()+" Followed: "+follower.getFollowedId());
-            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
-                aux.insertBeginning(new DSNode(follower.getFollowerId(),
-                        (relatedNodeTypeFollower == RelatedNodeType.ENTITY) ? getEntities().get(follower.getFollowerId()).getName() : getAttendee(follower.getFollowerId()).getName()));
+            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower)) {
+                previus = follower;
+                //System.out.println(" --> " + follower.getFollowedId() + " " + follower.getFollowerId());
+                break;
+            }
         }
-        return aux.values();
+        System.out.println(previus.getFollowerId()+" ____"+previus.getRelatedNodeTypeFollower().name());
+        System.out.println("--------------------------");
+
+//        ArrayList<DSNode> aux = new ArrayList<>();
+//        it = followers.vertexs();
+//        while (it.hasNext()){
+//            Follower follower = it.next().getValue();
+//            if (follower.getFollowedId().equals(previus.getFollowerId())) {
+//                System.out.println(" --> " + follower.getFollowerId()+ " ____"+relatedNodeTypeFollower);
+//                aux.add(new DSNode(follower.getFollowerId(),
+//                        (follower.getRelatedNodeTypeFollower() == RelatedNodeType.ENTITY) ?
+//                                getEntities().get(follower.getFollowerId()).getName() :
+//                                getAttendee(follower.getFollowerId()).getName()
+//                ));
+//            }
+//        }
+//
+//        Collections.sort(aux, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
+
+        ArrayList<DSNode> aux = new ArrayList<>();
+        it = followers.vertexs();
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+            if (follower.getFollowedId().equals(previus.getFollowerId())) {
+                System.out.println(" --> " + follower.getFollowerId()+ " ____"+relatedNodeTypeFollower);
+                aux.add(new DSNode(follower.getFollowerId(),
+                        (follower.getRelatedNodeTypeFollower() == RelatedNodeType.ENTITY) ?
+                                getEntities().get(follower.getFollowerId()).getName() :
+                                getAttendee(follower.getFollowerId()).getName()
+                ));
+            }
+        }
+
+        Collections.sort(aux, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
 
 
-        // idEntity10: { idEntity3, idEntity2, idAttendee1 }
-        // idEntity7: { idEntity1, idEntity3 }
+
+        System.out.println("--------------------------");
+        System.out.println("Resultado");
+        System.out.println("--------------------------");
+        for (DSNode dsNode: aux ) {
+            System.out.println(dsNode.getId()+" "+dsNode.getName());
+        }
+
+        return new IteratorArrayImpl(aux.toArray(), aux.size(), 0);
+
+
+
+
+        // idEntity10: { idEntity3, idEntity2, idAttendee1 }   <-- anterior: idEntity1
+        // idEntity7: { idEntity1, idEntity3 }   <-- anterior: idEntity2
 
 
 
