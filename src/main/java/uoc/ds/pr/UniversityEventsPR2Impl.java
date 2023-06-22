@@ -3,6 +3,7 @@ package uoc.ds.pr;
 import edu.uoc.ds.adt.helpers.Position;
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
+import edu.uoc.ds.adt.nonlinear.graphs.*;
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.exceptions.InvalidPositionException;
@@ -27,11 +28,15 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     private final HashTable<String, Worker> workers;
 
+    private final DirectedGraph<Follower, String> followers;
+
     public UniversityEventsPR2Impl() {
 
         roles = new DSArray<>(MAX_NUM_ROLES);
         workers = new HashTable<>();
         facilities = new DSArray<>(MAX_NUM_FACILITIES);
+
+        followers = new DirectedGraphImpl<>();
     }
 
     @Override
@@ -217,6 +222,23 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     @Override
     public void addFollower(String followerId, RelatedNodeType relatedNodeTypeFollower, String followedId, RelatedNodeType relatedNodeTypeFollowed) throws FollowerNotFound, FollowedException {
 
+        //System.out.println("https://eimtgit.uoc.edu/DS/DSLib/-/tree/master");
+
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE)){
+            DictionaryAVLImpl attendees = getAttendees();
+            if (attendees.containsKey(followerId)) throw new FollowerNotFound();
+        }
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY)){
+            HashTable<String, Entity> entities = getEntities();
+            if (!entities.containsKey(followerId)) throw new FollowerNotFound();
+        }
+
+        Follower follower = new Follower(followerId,relatedNodeTypeFollower, followedId, relatedNodeTypeFollowed);
+        /*Vertex<Follower> vFollower = */followers.newVertex(follower);
+
+
+
+
     }
 
     @Override
@@ -277,11 +299,47 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public int numFollowers(String id, RelatedNodeType relatedNodeType) {
-        return 0;
+
+
+//        System.out.println("----------------------------------");
+        Iterator<Vertex<Follower>> it = followers.vertexs();
+        int numFollowers=0;
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+//            System.out.println(""+
+//                    follower.getFollowerId()+" "+
+//                    follower.getRelatedNodeTypeFollower()+" "+
+//                    follower.getFollowedId()+" "+
+//                    follower.getRelatedNodeTypeFollowed());
+            if (follower.getFollowerId().equals(id) && follower.getRelatedNodeTypeFollower() == relatedNodeType)
+            numFollowers++;
+        }
+        return numFollowers;
+
+
+
+
+
     }
 
     @Override
     public int numFollowings(String id, RelatedNodeType relatedNodeType) {
-        return 0;
+
+//        System.out.println("----------------------------------");
+        Iterator<Vertex<Follower>> it = followers.vertexs();
+        int numFollowings=0;
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+//            System.out.println(""+
+//                    follower.getFollowerId()+" "+
+//                    follower.getRelatedNodeTypeFollower()+" "+
+//                    follower.getFollowedId()+" "+
+//                    follower.getRelatedNodeTypeFollowed());
+            if (follower.getFollowedId().equals(id) && follower.getRelatedNodeTypeFollower() == relatedNodeType)
+                numFollowings++;
+        }
+        return numFollowings;
+
+
     }
 }
