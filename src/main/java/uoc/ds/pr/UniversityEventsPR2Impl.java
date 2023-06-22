@@ -6,7 +6,10 @@ import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.adt.nonlinear.graphs.*;
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
+import edu.uoc.ds.adt.sequential.Stack;
+import edu.uoc.ds.adt.sequential.StackArrayImpl;
 import edu.uoc.ds.exceptions.InvalidPositionException;
+import edu.uoc.ds.traversal.BidirectionalIterator;
 import edu.uoc.ds.traversal.Iterator;
 import edu.uoc.ds.traversal.IteratorArrayImpl;
 import edu.uoc.ds.traversal.Traversal;
@@ -244,27 +247,15 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     @Override
     public Iterator<DSNode> getFollowers(String followedId, RelatedNodeType relatedNodeTypeFollowed) throws FollowerNotFound, NoFollowersException {
 
-
-        DSArray<DSNode> aux = new DSArray<>(numFollowers(followedId, relatedNodeTypeFollowed));
-
-        System.out.println("----------------------------------");
+        LinkedList<DSNode> aux = new LinkedList<>();
         Iterator<Vertex<Follower>> it = followers.vertexs();
         while (it.hasNext()){
             Follower follower = it.next().getValue();
-            System.out.println(""+
-                    follower.getFollowerId()+" "+
-                    follower.getRelatedNodeTypeFollower()+" "+
-                    follower.getFollowedId()+" "+
-                    follower.getRelatedNodeTypeFollowed());
-            if (follower.getFollowedId().equals(followedId) && follower.getRelatedNodeTypeFollowed() == relatedNodeTypeFollowed)
-                //aux.put(followedId,new DSNode(followedId,( relatedNodeTypeFollowed==RelatedNodeType.ENTITY ) ? ((Entity)follower).getName():((Attendee)follower).getName() ));
-                aux.put(followedId,new DSNode(followedId,"pepe"));
+            if (follower.getFollowerId().equals(followedId) && follower.getRelatedNodeTypeFollowed() == relatedNodeTypeFollowed)
+                aux.insertBeginning(new DSNode(follower.getFollowedId(),
+                        ( relatedNodeTypeFollowed==RelatedNodeType.ENTITY ) ? getEntities().get(follower.getFollowedId()).getName():getAttendee(follower.getFollowedId()).getName() ));
         }
         return aux.values();
-
-
-
-
     }
 
     @Override
