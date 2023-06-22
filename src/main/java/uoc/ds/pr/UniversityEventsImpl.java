@@ -50,6 +50,7 @@ public class UniversityEventsImpl implements UniversityEvents {
 
 
     public void addEntity(String id, String name, String description, EntityType entityType){
+        //System.out.print("Añadir entity: "+id+" ");
         Entity entity = getEntity(id);
         if (entity != null) {
             entity.setName(name);
@@ -59,9 +60,11 @@ public class UniversityEventsImpl implements UniversityEvents {
                 entities.delete(id);
                 entities.put(id, entity);
             }
+            //System.out.println("actualizada");
         } else {
             entity = EntityFactory.getEntity(entityType, id, name, description);
             entities.put(id, entity);
+            //System.out.println("nueva");
         }
     }
 

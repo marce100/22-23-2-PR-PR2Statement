@@ -227,14 +227,13 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
         //System.out.println("https://eimtgit.uoc.edu/DS/DSLib/-/tree/master");
 
-//        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE)){
-//            DictionaryAVLImpl attendees = getAttendees();
-//            if (attendees.containsKey(followerId)) throw new FollowerNotFound();
-//        }
-        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY)){
-            HashTable<String, Entity> entities = getEntities();
-            if (!entities.containsKey(followerId)) throw new FollowerNotFound();
-        }
+        // Seguidor no existe
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followerId) ) throw new FollowerNotFound();
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId) ) throw new FollowerNotFound();
+
+        // Seguido no existe
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followedId)) throw new FollowedException();
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followedId)) throw new FollowedException();
 
         Follower follower = new Follower(followerId,relatedNodeTypeFollower, followedId, relatedNodeTypeFollowed);
         /*Vertex<Follower> vFollower = */followers.newVertex(follower);
@@ -247,20 +246,39 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     @Override
     public Iterator<DSNode> getFollowers(String followedId, RelatedNodeType relatedNodeTypeFollowed) throws FollowerNotFound, NoFollowersException {
 
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followedId)) throw new FollowerNotFound();
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followedId)) throw new FollowerNotFound();
+        if (numFollowers(followedId, relatedNodeTypeFollowed)==0) throw new NoFollowersException();
+
         LinkedList<DSNode> aux = new LinkedList<>();
         Iterator<Vertex<Follower>> it = followers.vertexs();
         while (it.hasNext()){
             Follower follower = it.next().getValue();
-            if (follower.getFollowerId().equals(followedId) && follower.getRelatedNodeTypeFollowed() == relatedNodeTypeFollowed)
+            if (follower.getFollowerId().equals(followedId) && follower.getRelatedNodeTypeFollowed().equals(relatedNodeTypeFollowed))
                 aux.insertBeginning(new DSNode(follower.getFollowedId(),
                         ( relatedNodeTypeFollowed==RelatedNodeType.ENTITY ) ? getEntities().get(follower.getFollowedId()).getName():getAttendee(follower.getFollowedId()).getName() ));
         }
         return aux.values();
+
     }
 
     @Override
     public Iterator<DSNode> getFolloweds(String followerId, RelatedNodeType relatedNodeTypeFollower) throws FollowerNotFound, NoFollowedException {
-        return null;
+
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followerId)) throw new FollowerNotFound();
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
+        if (numFollowings(followerId, relatedNodeTypeFollower)==0) throw new NoFollowedException();
+
+        LinkedList<DSNode> aux = new LinkedList<>();
+        Iterator<Vertex<Follower>> it = followers.vertexs();
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
+                aux.insertBeginning(new DSNode(follower.getFollowerId(),
+                        (relatedNodeTypeFollower == RelatedNodeType.ENTITY) ? getEntities().get(follower.getFollowerId()).getName() : getAttendee(follower.getFollowerId()).getName()));
+        }
+        return aux.values();
+
     }
 
     @Override
