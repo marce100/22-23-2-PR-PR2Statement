@@ -283,7 +283,52 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<DSNode> recommendations(String followerId, RelatedNodeType relatedNodeTypeFollower) throws FollowerNotFound, NoFollowedException {
-        return null;
+
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followerId)) throw new FollowerNotFound();
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
+        if (numFollowings(followerId, relatedNodeTypeFollower)==0) throw new NoFollowedException();
+
+        System.out.println("--------------------------");
+        System.out.println(followerId);
+        System.out.println("--------------------------");
+
+        System.out.println("Anterior: ");
+
+
+
+        Iterator<Edge<String, Follower>> it2 = followers.edges();
+
+
+        Follower anterior;
+
+        while (it2.hasNext()){
+            Follower follower = it2.
+            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
+                anterior=follower.
+        }
+
+        LinkedList<DSNode> aux = new LinkedList<>();
+        Iterator<Vertex<Follower>> it = followers.vertexs();
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+            System.out.println(" Follower: "+follower.getFollowerId()+" Followed: "+follower.getFollowedId());
+            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
+                aux.insertBeginning(new DSNode(follower.getFollowerId(),
+                        (relatedNodeTypeFollower == RelatedNodeType.ENTITY) ? getEntities().get(follower.getFollowerId()).getName() : getAttendee(follower.getFollowerId()).getName()));
+        }
+        return aux.values();
+
+
+        // idEntity10: { idEntity3, idEntity2, idAttendee1 }
+        // idEntity7: { idEntity1, idEntity3 }
+
+
+
+
+
+
+
+
     }
 
     @Override
@@ -372,4 +417,5 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
 
     }
+
 }
