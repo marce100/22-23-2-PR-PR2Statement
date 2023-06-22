@@ -224,10 +224,10 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
         //System.out.println("https://eimtgit.uoc.edu/DS/DSLib/-/tree/master");
 
-        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE)){
-            DictionaryAVLImpl attendees = getAttendees();
-            if (attendees.containsKey(followerId)) throw new FollowerNotFound();
-        }
+//        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE)){
+//            DictionaryAVLImpl attendees = getAttendees();
+//            if (attendees.containsKey(followerId)) throw new FollowerNotFound();
+//        }
         if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY)){
             HashTable<String, Entity> entities = getEntities();
             if (!entities.containsKey(followerId)) throw new FollowerNotFound();
@@ -243,7 +243,28 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     @Override
     public Iterator<DSNode> getFollowers(String followedId, RelatedNodeType relatedNodeTypeFollowed) throws FollowerNotFound, NoFollowersException {
-        return null;
+
+
+        DSArray<DSNode> aux = new DSArray<>(numFollowers(followedId, relatedNodeTypeFollowed));
+
+        System.out.println("----------------------------------");
+        Iterator<Vertex<Follower>> it = followers.vertexs();
+        while (it.hasNext()){
+            Follower follower = it.next().getValue();
+            System.out.println(""+
+                    follower.getFollowerId()+" "+
+                    follower.getRelatedNodeTypeFollower()+" "+
+                    follower.getFollowedId()+" "+
+                    follower.getRelatedNodeTypeFollowed());
+            if (follower.getFollowedId().equals(followedId) && follower.getRelatedNodeTypeFollowed() == relatedNodeTypeFollowed)
+                //aux.put(followedId,new DSNode(followedId,( relatedNodeTypeFollowed==RelatedNodeType.ENTITY ) ? ((Entity)follower).getName():((Attendee)follower).getName() ));
+                aux.put(followedId,new DSNode(followedId,"pepe"));
+        }
+        return aux.values();
+
+
+
+
     }
 
     @Override
