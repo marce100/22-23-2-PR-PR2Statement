@@ -48,78 +48,20 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     @Override
     public void addWorker(String workerId, String name, String surname, LocalDate birthDay, String roleId) {
 
-
-        System.out.println("Antes----------------------------------------");
-        Iterator<Role> i= roles.values();
-        while (i.hasNext()){
-            Role r=i.next();
-            System.out.print(r.getId()+ "  Num workers: "+r.getWorkers().size()+"  ");
-
-            Iterator<Worker> iw= roles.get(r.getId()).getWorkers().values();
-            while (iw.hasNext()){
-                Worker workerXX= iw.next();
-                System.out.print(workerXX.getWorkerId()+" ");
-            }
-            System.out.println("");
-        }
-
-
-
-
-
-
         Worker worker = getWorker(workerId);
         if (worker != null) {
+            getRole(worker.getRoleId()).deleteWorker(worker);
             worker.setName(name);
             worker.setSurname(surname);
             worker.setBirthday(birthDay);
             worker.setRoleId(roleId);
             worker.setRole(getRole(roleId));
-
-            getRole(roleId).deleteWorker(worker); //////////////////esto no funciona
-
-
-
-
-
-
-
             getRole(roleId).addWorker(worker);
-
-
-
-
-            Iterator<Worker> i1 = getRole(roleId).getWorkers().values();
-            System.out.print(roleId+ "..:   ");
-            while (i1.hasNext()){
-                Worker w= i1.next();
-                System.out.print( w.getWorkerId()+" ");
-            }
-            System.out.println("");
-
         } else {
             worker = new Worker(workerId, name, surname, birthDay, roleId);
             worker.setRole(getRole(roleId));
-
             getRole(roleId).addWorker(worker);
             workers.put(workerId, worker);
-
-
-
-        }
-
-        System.out.println("Después--------------------------------------");
-        Iterator<Role> i1= roles.values();
-        while (i1.hasNext()){
-            Role r=i1.next();
-            System.out.print(r.getId()+ "  Num workers: "+r.getWorkers().size()+"  ");
-
-            Iterator<Worker> iw1= roles.get(r.getId()).getWorkers().values();
-            while (iw1.hasNext()){
-                Worker workerXX= iw1.next();
-                System.out.print(workerXX.getWorkerId()+" ");
-            }
-            System.out.println("");
         }
 
     }

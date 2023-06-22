@@ -54,9 +54,7 @@ public class UniversityEventsPR2Test extends UniversityEventsPR1Test {
         // GIVEN:
         initialState();
         //
-System.out.println( "**********************************" +
-                    "*        EMPIEZA TEST            *" +
-                    "**********************************");
+
         Assert.assertEquals(2, universityEvents.numWorkersByRole("R1"));
         Assert.assertEquals(1, universityEvents.numWorkersByRole("R2"));
         Assert.assertEquals(2, universityEvents.numWorkersByRole("R3"));
@@ -73,7 +71,7 @@ System.out.println( "**********************************" +
 
         Worker workerW89 = universityEvents.getWorker("W89");
         Assert.assertEquals("Josep", workerW89.getName());
-System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
         ////
         // add W99
         ////
@@ -89,7 +87,7 @@ System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         Worker workerW99 = universityEvents.getWorker("W99");
         Assert.assertEquals("Oscar", workerW99.getName());
-System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
         ////
         // update W99
         ////
@@ -106,7 +104,7 @@ System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         Assert.assertEquals("Oscar", workerW99.getName());
         Assert.assertEquals("Sánchez", workerW99.getSurname());
         Assert.assertEquals("R2", workerW99.getRole().getId());
-System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
         ////
         // update W99 - update Role
         ////
