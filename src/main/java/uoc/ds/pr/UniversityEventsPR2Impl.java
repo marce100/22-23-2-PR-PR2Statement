@@ -238,8 +238,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         Follower follower = new Follower(followerId,relatedNodeTypeFollower, followedId, relatedNodeTypeFollowed);
         /*Vertex<Follower> vFollower = */followers.newVertex(follower);
 
-
-
+followers.newEdge();
 
     }
 
@@ -288,6 +287,41 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
         if (numFollowings(followerId, relatedNodeTypeFollower)==0) throw new NoFollowedException();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         System.out.println("--------------------------");
         System.out.println(followerId);
         System.out.println("--------------------------");
@@ -305,29 +339,32 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         System.out.println(previus.getFollowerId()+" ____"+previus.getRelatedNodeTypeFollower().name());
         System.out.println("--------------------------");
 
-//        ArrayList<DSNode> aux = new ArrayList<>();
-//        it = followers.vertexs();
-//        while (it.hasNext()){
-//            Follower follower = it.next().getValue();
-//            if (follower.getFollowedId().equals(previus.getFollowerId())) {
-//                System.out.println(" --> " + follower.getFollowerId()+ " ____"+relatedNodeTypeFollower);
-//                aux.add(new DSNode(follower.getFollowerId(),
-//                        (follower.getRelatedNodeTypeFollower() == RelatedNodeType.ENTITY) ?
-//                                getEntities().get(follower.getFollowerId()).getName() :
-//                                getAttendee(follower.getFollowerId()).getName()
-//                ));
-//            }
-//        }
-//
-//        Collections.sort(aux, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
 
-        ArrayList<DSNode> aux = new ArrayList<>();
+
+        System.out.println("+++++++++++++++++++++++++++++");
+        System.out.println(followers.getVertex(previus));
+        DirectedVertexImpl<Follower, String> _vElmo = (DirectedVertexImpl<Follower, String>) followers.getVertex(previus);
+        Iterator<Edge<String, Follower>> it3 = _vElmo.edges();
+        while ( it3.hasNext() ) {
+            DirectedEdge<String, Follower> _edge1 = (DirectedEdge<String, Follower>) it3.next();
+            System.out.println("=" + _edge1.getLabel());
+            System.out.println("=" + _edge1.getVertexSrc().getValue().getFollowerId());
+            System.out.println("=" + _edge1.getVertexDst().getValue().getFollowedId());
+        }
+        System.out.println("+++++++++++++++++++++++++++++");
+
+
+
+
+
+
+        ArrayList<DSNode> aux2 = new ArrayList<>();
         it = followers.vertexs();
         while (it.hasNext()){
             Follower follower = it.next().getValue();
             if (follower.getFollowedId().equals(previus.getFollowerId())) {
                 System.out.println(" --> " + follower.getFollowerId()+ " ____"+relatedNodeTypeFollower);
-                aux.add(new DSNode(follower.getFollowerId(),
+                aux2.add(new DSNode(follower.getFollowerId(),
                         (follower.getRelatedNodeTypeFollower() == RelatedNodeType.ENTITY) ?
                                 getEntities().get(follower.getFollowerId()).getName() :
                                 getAttendee(follower.getFollowerId()).getName()
@@ -335,18 +372,18 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
             }
         }
 
-        Collections.sort(aux, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
+        Collections.sort(aux2, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
 
 
 
         System.out.println("--------------------------");
         System.out.println("Resultado");
         System.out.println("--------------------------");
-        for (DSNode dsNode: aux ) {
+        for (DSNode dsNode: aux2 ) {
             System.out.println(dsNode.getId()+" "+dsNode.getName());
         }
 
-        return new IteratorArrayImpl(aux.toArray(), aux.size(), 0);
+        return new IteratorArrayImpl(aux2.toArray(), aux2.size(), 0);
 
 
 
