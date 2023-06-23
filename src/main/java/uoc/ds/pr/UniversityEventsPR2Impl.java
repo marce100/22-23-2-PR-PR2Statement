@@ -495,11 +495,50 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
         /*
          *
-         *
+         * Returns an iterator with the following ratings for the given follower. If the follower does not exist or there are no ratings, an error will be indicated.
          *
          *
          *
          */
+
+//        Iterator<Edge<String, DSNode>> it = graph.edges();
+//        while (it.hasNext()) {
+//            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+//            if (_edge.getVertexDst().getValue().getId().equals(followerId)) {
+//                 System.out.println(_edge.getLabel() + " " + _edge.getVertexSrc().getValue().getId());
+//            }
+//        }
+
+        Iterator<uoc.ds.pr.model.Rating> iterator = null;
+        DSNode nodeToFind = new DSNode(followerId, relatedNodeType.toString());
+        Iterator<Vertex<DSNode>> it = graph.vertexs();
+        while (it.hasNext()){
+
+            DSNode node = it.next().getValue();
+
+            if (node.getId().equals(nodeToFind.getId())) {
+
+                System.out.println(node.getId()+" "+node.getName());
+
+                Iterator<Edge<String, DSNode>> it2 = graph.edges();
+
+              while (it2.hasNext()) {
+                    DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
+                    if (_edge1.getVertexDst().getValue().getId()==node.getId()) {
+                        //System.out.println("______"+_edge1.getLabel()+" "+_edge1.getVertexSrc().getValue().getId());
+                        try {
+                            return (getEventsByAttendee(_edge1.getVertexSrc().getValue().getId())).next().ratings();
+                        }catch (Exception e){
+                            throw new NoRatingsException();
+                        }
+                    }
+                }
+                //result.insertBeginning(nodeToFind);
+            }
+        }
+
+
+
 
         return null;
     }

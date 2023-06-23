@@ -15,6 +15,8 @@ public class Attendee  {
     private String phone;
     private final List<Event> events;
 
+
+
 	public Attendee(String idUser, String name, String surname, LocalDate dateOfBirth, String phone) {
         this.setId(idUser);
         this.setName(name);
@@ -22,6 +24,8 @@ public class Attendee  {
         this.setDateOfBirth(dateOfBirth);
         this.setPhone(phone);
         this.events = new LinkedList<>();
+
+
     }
 
     public void setName(String name) {
@@ -115,5 +119,6 @@ public class Attendee  {
         }
         return found;
     }
+
 
 }
