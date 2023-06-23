@@ -4,10 +4,7 @@ import edu.uoc.ds.adt.helpers.Position;
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
 import edu.uoc.ds.adt.nonlinear.graphs.*;
-import edu.uoc.ds.adt.sequential.LinkedList;
-import edu.uoc.ds.adt.sequential.List;
-import edu.uoc.ds.adt.sequential.Stack;
-import edu.uoc.ds.adt.sequential.StackArrayImpl;
+import edu.uoc.ds.adt.sequential.*;
 import edu.uoc.ds.exceptions.InvalidPositionException;
 import edu.uoc.ds.traversal.BidirectionalIterator;
 import edu.uoc.ds.traversal.Iterator;
@@ -28,10 +25,10 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
     private final DSArray<Role> roles;
     private final DSArray<Facility> facilities;
-
     private final HashTable<String, Worker> workers;
 
-    private final DirectedGraph<Follower, String> followers;
+    private final DirectedGraph<DSNode, String> graph;
+
 
     public UniversityEventsPR2Impl() {
 
@@ -39,7 +36,9 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         workers = new HashTable<>();
         facilities = new DSArray<>(MAX_NUM_FACILITIES);
 
-        followers = new DirectedGraphImpl<>();
+
+        graph = new DirectedGraphImpl<>();
+
     }
 
     @Override
@@ -235,11 +234,167 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         if (relatedNodeTypeFollowed.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followedId)) throw new FollowedException();
         if (relatedNodeTypeFollowed.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followedId)) throw new FollowedException();
 
+        /*
         Follower follower = new Follower(followerId,relatedNodeTypeFollower, followedId, relatedNodeTypeFollowed);
-        /*Vertex<Follower> vFollower = */followers.newVertex(follower);
+        Vertex<Follower> vFollower = followers.newVertex(follower);
+        */
+/*
+        DSNode ds1 = null;
+        DSNode ds2 = null;
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ENTITY)){
+            ds1 = new DSNode(followerId, "AAAAAAAAAAAA");
+        }
+        if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE)){
+            ds1 = new DSNode(followerId, "AAAAAAAAAAAA");
+        }
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ENTITY)){
+            ds2 = new DSNode(followedId, "BBBBBDBBBBBB");
+        }
+        if (relatedNodeTypeFollowed.equals(RelatedNodeType.ATTENDEE)){
+            ds2 = new DSNode(followedId, "BBBBBDBBBBBB");
+        }
+        ds1 = new DSNode(followerId, "AAAAAAAAAAAA");
+        ds2 = new DSNode(followedId, "BBBBBDBBBBBB");
+        nodes.put(followerId,ds1);
+        nodes.put(followedId,ds2);
 
-followers.newEdge();
 
+
+        Vertex<DSNode> vElmo = graph.newVertex(nodes.get(followerId));
+        Vertex<DSNode> vPiggy = graph.newVertex(nodes.get(followedId));
+
+
+        //Piggy is follower of Elmo
+        Edge<String, DSNode> edge1a = graph.newEdge(vElmo, vPiggy);
+        edge1a.setLabel("follower");
+        //Elmo is followed of Piggy
+        Edge<String, DSNode> edge1b = graph.newEdge(vPiggy, vElmo);
+        edge1b.setLabel("followed");
+
+        System.out.println("------------------------------------");
+        System.out.println("(followerId) "+followerId);
+        System.out.println("------------------------------------");
+        DirectedVertexImpl<DSNode, String> _vElmo = (DirectedVertexImpl<DSNode, String>) graph.getVertex(nodes.get(followerId));
+        Iterator<Edge<String, DSNode>> it = _vElmo.edges();
+        DirectedEdge<String, DSNode> _edge1 ;
+        while (it.hasNext()) {
+            _edge1 = (DirectedEdge<String, DSNode>) it.next();
+            System.out.println("" + _edge1.getLabel());
+            System.out.println("" + _edge1.getVertexSrc().getValue().getId()+"  "+_edge1.getVertexSrc().getValue().getName());
+            System.out.println("" + _edge1.getVertexDst().getValue().getId()+"  "+_edge1.getVertexDst().getValue().getName());
+        }
+        System.out.println("------------------------------------");
+        System.out.println("");
+*/
+
+
+
+
+
+        DSNode followerNode = new DSNode(followerId, relatedNodeTypeFollower.toString());
+        DSNode followedNode = new DSNode(followedId, relatedNodeTypeFollowed.toString());
+
+        Vertex<DSNode> followerVertex = graph.newVertex(followerNode);
+        Vertex<DSNode> followedVertex = graph.newVertex(followedNode);
+
+        Edge<String, DSNode> edge = graph.newEdge(followerVertex, followedVertex);
+
+
+
+
+
+
+
+
+
+
+
+
+
+//followers.newEdge();
+
+
+/*
+        System.out.println("*****************");
+        System.out.println("* INICIO PRUEBA *");
+        System.out.println("*****************");
+
+
+        DSNode elmo = new DSNode("ELM1980", "Elmo");
+        DSNode piggy = new DSNode("PIG1974", "Miss Piggy");
+        DSNode kermit = new DSNode("KERM1955", "Kermit the Frog");
+        DSNode rowlf = new DSNode("Rowlf1962", "Rowlf the Dog");
+
+        Vertex<DSNode> vElmo = graph.newVertex(elmo);
+        Vertex<DSNode> vPiggy = graph.newVertex(piggy);
+        Vertex<DSNode> vKermit = graph.newVertex(kermit);
+        Vertex<DSNode> vRowlf = graph.newVertex(rowlf);
+
+        //Piggy is follower of Elmo
+        Edge<String, DSNode> edge1a = graph.newEdge(vElmo, vPiggy);
+        edge1a.setLabel("follower");
+        //Elmo is followed of Piggy
+        Edge<String, DSNode> edge1b = graph.newEdge(vPiggy, vElmo);
+        edge1b.setLabel("followed");
+
+        //Kermit is follower of Elmo
+        Edge<String, DSNode> edge2a = graph.newEdge(vElmo, vKermit);
+        edge2a.setLabel("follower");
+        //Elmo is followed of Kermit
+        Edge<String, DSNode> edge2b = graph.newEdge(vKermit, vElmo);
+        edge2b.setLabel("followed");
+
+        // Rowlf is follower of Elmo
+        Edge<String, DSNode> edge3a = graph.newEdge(vElmo, vRowlf);
+        edge3a.setLabel("follower");
+        // Elmo is followed of Rowlf
+        Edge<String, DSNode> edge3b = graph.newEdge(vRowlf, vElmo);
+        edge3b.setLabel("followed");
+
+        // Kermit is follower of Piggy
+        Edge<String, DSNode> edge4a = graph.newEdge(vPiggy, vKermit);
+        edge4a.setLabel("follower");
+        // Piggy is followed of Kermit
+        Edge<String, DSNode> edge4b = graph.newEdge(vKermit, vPiggy);
+        edge4b.setLabel("followed");
+
+
+
+        // ELMO
+        DirectedVertexImpl<DSNode, String> _vElmo = (DirectedVertexImpl<DSNode, String>) graph.getVertex(elmo);
+
+        Iterator<Edge<String, DSNode>> it = _vElmo.edges();
+
+        DirectedEdge<String, DSNode> _edge1 ;
+        while (it.hasNext()) {
+            _edge1 = (DirectedEdge<String, DSNode>) it.next();
+            System.out.println("follower" + _edge1.getLabel());
+            System.out.println("Elmo" + _edge1.getVertexSrc().getValue().getName());
+            System.out.println("Miss Piggy" + _edge1.getVertexDst().getValue().getName());
+        }
+
+
+
+
+        System.out.println("*****************");
+        System.out.println("* FIN PRUEBA    *");
+        System.out.println("*****************");
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 
     @Override
@@ -249,15 +404,16 @@ followers.newEdge();
         if (relatedNodeTypeFollowed.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followedId)) throw new FollowerNotFound();
         if (numFollowers(followedId, relatedNodeTypeFollowed)==0) throw new NoFollowersException();
 
-        LinkedList<DSNode> aux = new LinkedList<>();
-        Iterator<Vertex<Follower>> it = followers.vertexs();
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-            if (follower.getFollowerId().equals(followedId) && follower.getRelatedNodeTypeFollowed().equals(relatedNodeTypeFollowed))
-                aux.insertBeginning(new DSNode(follower.getFollowedId(),
-                        ( relatedNodeTypeFollowed==RelatedNodeType.ENTITY ) ? getEntities().get(follower.getFollowedId()).getName():getAttendee(follower.getFollowedId()).getName() ));
+        LinkedList<DSNode> result = new LinkedList<>();
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexSrc().getValue().getId().equals(followedId)) {
+                //System.out.println(_edge.getLabel() + " " + _edge.getVertexDst().getValue().getId());
+                result.insertEnd(_edge.getVertexDst().getValue());
+            }
         }
-        return aux.values();
+        return result.values();
 
     }
 
@@ -268,16 +424,16 @@ followers.newEdge();
         if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
         if (numFollowings(followerId, relatedNodeTypeFollower)==0) throw new NoFollowedException();
 
-        LinkedList<DSNode> aux = new LinkedList<>();
-        Iterator<Vertex<Follower>> it = followers.vertexs();
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower))
-                aux.insertBeginning(new DSNode(follower.getFollowerId(),
-                        (relatedNodeTypeFollower == RelatedNodeType.ENTITY) ? getEntities().get(follower.getFollowerId()).getName() : getAttendee(follower.getFollowerId()).getName()));
+        LinkedList<DSNode> result = new LinkedList<>();
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexDst().getValue().getId().equals(followerId)) {
+                //System.out.println(_edge.getLabel() + " " + _edge.getVertexSrc().getValue().getId());
+                result.insertEnd(_edge.getVertexSrc().getValue());
+            }
         }
-        return aux.values();
-
+        return result.values();
     }
 
     @Override
@@ -321,7 +477,7 @@ followers.newEdge();
 
 
 
-
+/*
         System.out.println("--------------------------");
         System.out.println(followerId);
         System.out.println("--------------------------");
@@ -338,26 +494,26 @@ followers.newEdge();
         }
         System.out.println(previus.getFollowerId()+" ____"+previus.getRelatedNodeTypeFollower().name());
         System.out.println("--------------------------");
+*/
+
+
+//        System.out.println("+++++++++++++++++++++++++++++");
+//        System.out.println(followers.getVertex(previus));
+//        DirectedVertexImpl<Follower, String> _vElmo = (DirectedVertexImpl<Follower, String>) followers.getVertex(previus);
+//        Iterator<Edge<String, Follower>> it3 = _vElmo.edges();
+//        //while ( it3.hasNext() ) {
+//            DirectedEdge<String, Follower> _edge1 = (DirectedEdge<String, Follower>) it3.next();
+//            System.out.println("=" + _edge1.getLabel());
+//            System.out.println("=" + _edge1.getVertexSrc().getValue().getFollowerId());
+//            System.out.println("=" + _edge1.getVertexDst().getValue().getFollowedId());
+//        //}
+//        System.out.println("+++++++++++++++++++++++++++++");
 
 
 
-        System.out.println("+++++++++++++++++++++++++++++");
-        System.out.println(followers.getVertex(previus));
-        DirectedVertexImpl<Follower, String> _vElmo = (DirectedVertexImpl<Follower, String>) followers.getVertex(previus);
-        Iterator<Edge<String, Follower>> it3 = _vElmo.edges();
-        while ( it3.hasNext() ) {
-            DirectedEdge<String, Follower> _edge1 = (DirectedEdge<String, Follower>) it3.next();
-            System.out.println("=" + _edge1.getLabel());
-            System.out.println("=" + _edge1.getVertexSrc().getValue().getFollowerId());
-            System.out.println("=" + _edge1.getVertexDst().getValue().getFollowedId());
-        }
-        System.out.println("+++++++++++++++++++++++++++++");
 
 
-
-
-
-
+/*
         ArrayList<DSNode> aux2 = new ArrayList<>();
         it = followers.vertexs();
         while (it.hasNext()){
@@ -393,7 +549,8 @@ followers.newEdge();
 
 
 
-
+*/
+        return null;
 
 
 
@@ -445,46 +602,56 @@ followers.newEdge();
     public int numFollowers(String id, RelatedNodeType relatedNodeType) {
 
 
-//        System.out.println("----------------------------------");
-        Iterator<Vertex<Follower>> it = followers.vertexs();
-        int numFollowers=0;
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-//            System.out.println(""+
-//                    follower.getFollowerId()+" "+
-//                    follower.getRelatedNodeTypeFollower()+" "+
-//                    follower.getFollowedId()+" "+
-//                    follower.getRelatedNodeTypeFollowed());
-            if (follower.getFollowerId().equals(id) && follower.getRelatedNodeTypeFollower() == relatedNodeType)
-            numFollowers++;
+//        int count = 0;
+//        DSNode nodeToFind = new DSNode(id, relatedNodeType.toString());
+//        Iterator<Vertex<DSNode>> it = graph.vertexs();
+//        while (it.hasNext()){
+//
+//            DSNode node = it.next().getValue();
+//
+//            if (node.getId().equals(nodeToFind.getId())) {
+//
+//                System.out.println(node.getId()+" "+node.getName());
+//
+//                Iterator<Edge<String, DSNode>> it2 = graph.edges();
+//
+//              while (it2.hasNext()) {
+//                    DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
+//                    if (_edge1.getVertexSrc().getValue().getId()==node.getId())
+//                    System.out.println(_edge1.getLabel()+" "+_edge1.getVertexDst().getValue().getId());
+//                }
+//            }
+//        }
+
+
+
+        int count = 0;
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexSrc().getValue().getId().equals(id)) {
+                //System.out.println(_edge1.getLabel() + " " + _edge1.getVertexDst().getValue().getId());
+                count++;
+            }
         }
-        return numFollowers;
 
-
-
-
+        return count;
 
     }
 
     @Override
     public int numFollowings(String id, RelatedNodeType relatedNodeType) {
 
-//        System.out.println("----------------------------------");
-        Iterator<Vertex<Follower>> it = followers.vertexs();
-        int numFollowings=0;
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-//            System.out.println(""+
-//                    follower.getFollowerId()+" "+
-//                    follower.getRelatedNodeTypeFollower()+" "+
-//                    follower.getFollowedId()+" "+
-//                    follower.getRelatedNodeTypeFollowed());
-            if (follower.getFollowedId().equals(id) && follower.getRelatedNodeTypeFollower() == relatedNodeType)
-                numFollowings++;
+        int count = 0;
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexDst().getValue().getId().equals(id)) {
+                //System.out.println(_edge1.getLabel() + " " + _edge1.getVertexDst().getValue().getId());
+                count++;
+            }
         }
-        return numFollowings;
-
-
+        return count;
     }
 
 }
