@@ -26,7 +26,6 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
     private final DSArray<Role> roles;
     private final DSArray<Facility> facilities;
     private final HashTable<String, Worker> workers;
-
     private final DirectedGraph<DSNode, String> graph;
 
 
@@ -297,7 +296,7 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         Vertex<DSNode> followerVertex = graph.newVertex(followerNode);
         Vertex<DSNode> followedVertex = graph.newVertex(followedNode);
 
-        Edge<String, DSNode> edge = graph.newEdge(followerVertex, followedVertex);
+        /*Edge<String, DSNode> edge =*/ graph.newEdge(followerVertex, followedVertex);
 
 
 
@@ -446,119 +445,62 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-        System.out.println("--------------------------");
-        System.out.println(followerId);
-        System.out.println("--------------------------");
-        System.out.print("Anterior: ");
-        Follower previus= null;
-        Iterator<Vertex<Follower>> it = followers.vertexs();
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-            if (follower.getFollowedId().equals(followerId) && follower.getRelatedNodeTypeFollower().equals(relatedNodeTypeFollower)) {
-                previus = follower;
-                //System.out.println(" --> " + follower.getFollowedId() + " " + follower.getFollowerId());
-                break;
-            }
-        }
-        System.out.println(previus.getFollowerId()+" ____"+previus.getRelatedNodeTypeFollower().name());
-        System.out.println("--------------------------");
-*/
-
-
-//        System.out.println("+++++++++++++++++++++++++++++");
-//        System.out.println(followers.getVertex(previus));
-//        DirectedVertexImpl<Follower, String> _vElmo = (DirectedVertexImpl<Follower, String>) followers.getVertex(previus);
-//        Iterator<Edge<String, Follower>> it3 = _vElmo.edges();
-//        //while ( it3.hasNext() ) {
-//            DirectedEdge<String, Follower> _edge1 = (DirectedEdge<String, Follower>) it3.next();
-//            System.out.println("=" + _edge1.getLabel());
-//            System.out.println("=" + _edge1.getVertexSrc().getValue().getFollowerId());
-//            System.out.println("=" + _edge1.getVertexDst().getValue().getFollowedId());
-//        //}
-//        System.out.println("+++++++++++++++++++++++++++++");
-
-
-
-
-
-/*
-        ArrayList<DSNode> aux2 = new ArrayList<>();
-        it = followers.vertexs();
-        while (it.hasNext()){
-            Follower follower = it.next().getValue();
-            if (follower.getFollowedId().equals(previus.getFollowerId())) {
-                System.out.println(" --> " + follower.getFollowerId()+ " ____"+relatedNodeTypeFollower);
-                aux2.add(new DSNode(follower.getFollowerId(),
-                        (follower.getRelatedNodeTypeFollower() == RelatedNodeType.ENTITY) ?
-                                getEntities().get(follower.getFollowerId()).getName() :
-                                getAttendee(follower.getFollowerId()).getName()
-                ));
+        // Get parent
+        String id = null;
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexDst().getValue().getId().equals(followerId)) {
+                // System.out.println(_edge.getLabel() + " " + _edge.getVertexSrc().getValue().getId());
+                id = _edge.getVertexSrc().getValue().getId();
             }
         }
 
-        Collections.sort(aux2, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
+//        System.out.println("???????????????????????????????");
+//        System.out.println("Buscar seguidores de: "+followerId);
+//        System.out.println("Anterior: "+id);
+//        System.out.println("???????????????????????????????");
 
-
-
-        System.out.println("--------------------------");
-        System.out.println("Resultado");
-        System.out.println("--------------------------");
-        for (DSNode dsNode: aux2 ) {
-            System.out.println(dsNode.getId()+" "+dsNode.getName());
+        ArrayList<DSNode> result = new ArrayList<>();
+        Iterator<Edge<String, DSNode>> it2 = graph.edges();
+        while (it2.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it2.next();
+            if (_edge.getVertexDst().getValue().getId().equals(id)) {
+//                System.out.println(
+//                        _edge.getLabel() + " " +
+//                        _edge.getVertexSrc().getValue().getId() + " "+
+//                        _edge.getVertexSrc().getValue().getName()+" "+
+//                        _edge.hashCode()  );
+                result.add(_edge.getVertexSrc().getValue());
+            }
         }
 
-        return new IteratorArrayImpl(aux2.toArray(), aux2.size(), 0);
+        for (DSNode dsNode :result) {
+            System.out.println(dsNode.getId());
+        }
 
 
-
-
-        // idEntity10: { idEntity3, idEntity2, idAttendee1 }   <-- anterior: idEntity1
-        // idEntity7: { idEntity1, idEntity3 }   <-- anterior: idEntity2
-
-
-
-*/
-        return null;
-
-
-
+        //Collections.sort(result, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
+        return new IteratorArrayImpl(result.toArray(), result.size(), 0);
+        //return result.values();
 
     }
 
     @Override
     public Iterator<uoc.ds.pr.model.Rating> getRatingsOftheFollowed(String followerId, RelatedNodeType relatedNodeType) throws FollowerNotFound, NoFollowedException, NoRatingsException {
+
+        if (relatedNodeType.equals(RelatedNodeType.ENTITY) && !getEntities().containsKey(followerId)) throw new FollowerNotFound();
+        if (relatedNodeType.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
+        if (numFollowings(followerId, relatedNodeType)==0) throw new NoFollowedException();
+
+        /*
+         *
+         *
+         *
+         *
+         *
+         */
+
         return null;
     }
 
