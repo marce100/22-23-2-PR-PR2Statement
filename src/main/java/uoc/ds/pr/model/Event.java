@@ -115,6 +115,9 @@ public class Event implements Comparable<Event> {
         Rating newRating = new Rating(rating, message, attendee);
         ratings.insertEnd(newRating);
         sumRating+=rating.getValue();
+
+
+        attendee.getRatings().insertEnd(newRating);
     }
 
     public boolean hasRatings() {

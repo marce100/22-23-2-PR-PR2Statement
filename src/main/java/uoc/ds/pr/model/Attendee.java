@@ -16,6 +16,8 @@ public class Attendee  {
     private final List<Event> events;
 
 
+    private final List<Rating> ratings;
+    private double sumRating;
 
 	public Attendee(String idUser, String name, String surname, LocalDate dateOfBirth, String phone) {
         this.setId(idUser);
@@ -24,6 +26,9 @@ public class Attendee  {
         this.setDateOfBirth(dateOfBirth);
         this.setPhone(phone);
         this.events = new LinkedList<>();
+
+
+        this.ratings = new LinkedList<>();
 
 
     }
@@ -118,6 +123,12 @@ public class Attendee  {
             found = it.next().getEventId().equals(eventId);
         }
         return found;
+    }
+
+
+
+    public List<Rating> getRatings() {
+        return ratings;
     }
 
 

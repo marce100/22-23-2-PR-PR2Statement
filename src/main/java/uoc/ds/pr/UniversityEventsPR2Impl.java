@@ -525,12 +525,22 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
               while (it2.hasNext()) {
                     DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
                     if (_edge1.getVertexDst().getValue().getId()==node.getId()) {
-                        //System.out.println("______"+_edge1.getLabel()+" "+_edge1.getVertexSrc().getValue().getId());
-                        try {
-                            return (getEventsByAttendee(_edge1.getVertexSrc().getValue().getId())).next().ratings();
-                        }catch (Exception e){
-                            throw new NoRatingsException();
-                        }
+                        System.out.println("______"+_edge1.getLabel()+" "+_edge1.getVertexSrc().getValue().getId());
+                        Attendee attendee = getAttendee(_edge1.getVertexSrc().getValue().getId());
+                        System.out.println("______"+attendee.getId());
+                        Iterator<uoc.ds.pr.model.Rating> it3=attendee.getRatings().values();
+                        while (it3.hasNext()){
+                            uoc.ds.pr.model.Rating rating= it3.next();
+                            System.out.println("______"+rating.rating().getValue());
+                            System.out.println("______"+rating.rating().getMessage());
+
+                    }
+
+//                        try {
+//                            return (getEventsByAttendee(_edge1.getVertexSrc().getValue().getId())).next().ratings();
+//                        }catch (Exception e){
+//                            throw new NoRatingsException();
+//                        }
                     }
                 }
                 //result.insertBeginning(nodeToFind);

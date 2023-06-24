@@ -343,4 +343,12 @@ public class UniversityEventsImpl implements UniversityEvents {
     public DictionaryAVLImpl getAttendees() {
         return attendees;
     }
+
+
+
+
+
+
+
+
 }
