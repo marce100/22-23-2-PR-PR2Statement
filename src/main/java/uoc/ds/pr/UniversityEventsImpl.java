@@ -1,6 +1,7 @@
 package uoc.ds.pr;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 import edu.uoc.ds.adt.nonlinear.DictionaryAVLImpl;
 import edu.uoc.ds.adt.nonlinear.HashTable;
@@ -346,7 +347,12 @@ public class UniversityEventsImpl implements UniversityEvents {
 
 
 
-
+    /*
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    */
 
 
 

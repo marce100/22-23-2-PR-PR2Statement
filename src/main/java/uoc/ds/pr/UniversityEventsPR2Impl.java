@@ -533,6 +533,12 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
                             uoc.ds.pr.model.Rating rating= it3.next();
                             System.out.println("______"+rating.rating().getValue());
                             System.out.println("______"+rating.rating().getMessage());
+    /*
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    https://www.baeldung.com/java-extending-enums
+    */
 
                     }
 
