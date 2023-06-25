@@ -24,4 +24,8 @@ public class Rating {
 
     public String getMessage(){ return this.message; }
 
+    public String getId(){
+        return this.attendee.getId();
+    }
+
 }

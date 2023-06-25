@@ -217,6 +217,8 @@ public class UniversityEventsImpl implements UniversityEvents {
 
         event.addRating(rating, message, attendee);
         updateBestEvent(event);
+
+
     }
 
 

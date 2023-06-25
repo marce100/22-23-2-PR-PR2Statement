@@ -501,22 +501,16 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
          *
          */
 
-//        Iterator<Edge<String, DSNode>> it = graph.edges();
-//        while (it.hasNext()) {
-//            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
-//            if (_edge.getVertexDst().getValue().getId().equals(followerId)) {
-//                 System.out.println(_edge.getLabel() + " " + _edge.getVertexSrc().getValue().getId());
-//            }
-//        }
-
-        Iterator<uoc.ds.pr.model.Rating> iterator = null;
-        DSNode nodeToFind = new DSNode(followerId, relatedNodeType.toString());
+        System.out.println("----------------------------");
+        System.out.println("BUSCAR: "+followerId);
+        System.out.println("----------------------------");
+        ArrayList<uoc.ds.pr.model.Rating> result = new ArrayList<>();
         Iterator<Vertex<DSNode>> it = graph.vertexs();
         while (it.hasNext()){
 
             DSNode node = it.next().getValue();
 
-            if (node.getId().equals(nodeToFind.getId())) {
+            if (node.getId().equals(followerId)) {
 
                 System.out.println(node.getId()+" "+node.getName());
 
@@ -524,39 +518,41 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
 
               while (it2.hasNext()) {
                     DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
-                    if (_edge1.getVertexDst().getValue().getId()==node.getId()) {
-                        System.out.println("______"+_edge1.getLabel()+" "+_edge1.getVertexSrc().getValue().getId());
-                        Attendee attendee = getAttendee(_edge1.getVertexSrc().getValue().getId());
-                        System.out.println("______"+attendee.getId());
-                        Iterator<uoc.ds.pr.model.Rating> it3=attendee.getRatings().values();
+
+                    String idAtendee = _edge1.getVertexSrc().getValue().getId();
+                    System.out.println("______"+idAtendee);
+
+
+                        Iterator<uoc.ds.pr.model.Rating> it3=getAttendee(node.getId()).getRatings().values();
                         while (it3.hasNext()){
                             uoc.ds.pr.model.Rating rating= it3.next();
-                            System.out.println("______"+rating.rating().getValue());
-                            System.out.println("______"+rating.rating().getMessage());
-    /*
-    https://www.baeldung.com/java-extending-enums
-    https://www.baeldung.com/java-extending-enums
-    https://www.baeldung.com/java-extending-enums
-    https://www.baeldung.com/java-extending-enums
-    */
+                            System.out.println("______>"+rating.rating().getValue());
+                            System.out.println("______>"+rating.getMessage());
+                            result.add(rating);
+                        }
 
-                    }
-
-//                        try {
-//                            return (getEventsByAttendee(_edge1.getVertexSrc().getValue().getId())).next().ratings();
-//                        }catch (Exception e){
-//                            throw new NoRatingsException();
-//                        }
-                    }
                 }
-                //result.insertBeginning(nodeToFind);
+
             }
+            break;
         }
 
 
+//return null;
+
+        //return result.values();
+        Collections.sort(result, Comparator.comparing(uoc.ds.pr.model.Rating::getId/*, Comparator.reverseOrder()*/));
+
+        System.out.println("RESULTADO: ");
+        for (uoc.ds.pr.model.Rating rating : result) {
+            System.out.println(rating.rating().getValue());
+            System.out.println(rating.getId());
+            System.out.println(rating.getMessage());
+
+        }
 
 
-        return null;
+        return new IteratorArrayImpl(result.toArray(), result.size(), 0);
     }
 
     @Override

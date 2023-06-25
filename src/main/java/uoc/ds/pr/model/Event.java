@@ -118,6 +118,7 @@ public class Event implements Comparable<Event> {
 
 
         attendee.getRatings().insertEnd(newRating);
+
     }
 
     public boolean hasRatings() {
