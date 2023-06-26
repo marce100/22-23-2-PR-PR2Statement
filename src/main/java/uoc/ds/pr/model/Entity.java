@@ -5,21 +5,14 @@ import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.traversal.Iterator;
 import uoc.ds.pr.UniversityEvents;
 import uoc.ds.pr.UniversityEventsPR2;
-import uoc.ds.pr.UniversityEventsPR2Impl;
 
 public abstract class Entity {
     private String id;
     private String name;
     private String description;
-
     private UniversityEvents.EntityType entityType;
-
     private UniversityEventsPR2.Level level;
-
     private final List<Event> events;
-
-
-
 
 	public Entity(String idUser, String name, String description, UniversityEvents.EntityType entityType) {
         this.setId(idUser);
@@ -28,8 +21,6 @@ public abstract class Entity {
         this.setEntityType(entityType);
         this.events = new LinkedList<>();
         this.level = UniversityEventsPR2.Level.BRONZE;
-
-
     }
 
     public void setName(String name) {
@@ -62,10 +53,7 @@ public abstract class Entity {
         this.entityType = entityType;
     }
 
-
-    public void addEvent(Event event) {
-        events.insertEnd(event);
-    }
+    public void addEvent(Event event) { this.events.insertEnd(event); }
 
     public Iterator<Event> events() {
         return events.values();
@@ -96,8 +84,5 @@ public abstract class Entity {
     public void setLevel(UniversityEventsPR2.Level level) {
         this.level = level;
     }
-
-
-
 
 }

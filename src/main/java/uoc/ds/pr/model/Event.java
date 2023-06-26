@@ -2,18 +2,10 @@ package uoc.ds.pr.model;
 
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
-import edu.uoc.ds.adt.sequential.Queue;
-import edu.uoc.ds.adt.sequential.QueueArrayImpl;
 import edu.uoc.ds.traversal.Iterator;
-import edu.uoc.ds.traversal.IteratorArrayImpl;
-import edu.uoc.ds.traversal.IteratorTraversalValuesImpl;
 import uoc.ds.pr.UniversityEvents;
-
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Comparator;
-
-
 import edu.uoc.ds.adt.nonlinear.HashTable;
 
 
@@ -28,27 +20,15 @@ public class Event implements Comparable<Event> {
     private final LocalDate endDate;
     private final int max;
     private final byte resources;
-
     private EventRequest request;
     private Entity entity;
     private final boolean allowRegister;
-
-
-
     private final List<Rating> ratings;
     private double sumRating;
-
     private int numSubstitutes;
-
-    //private final Queue<Enrollment> enrollments;
-
     private List<Attendee> attenders;
-
-
-    private LinkedList<Worker> workers;
-
+    private List<Worker> workers;
     private HashTable<String, Enrollment> enrollments;
-
 
     public Event(String eventId, Entity entity, String description, UniversityEvents.InstallationType installationType,
                  byte resources, int max, LocalDate startDate, LocalDate endDate, boolean allowRegister) {
@@ -61,15 +41,10 @@ public class Event implements Comparable<Event> {
         this.startDate = startDate;
         this.endDate = endDate;
         this.allowRegister = allowRegister;
-        //this.enrollments = new QueueArrayImpl<>(MAX_NUM_ENROLLMENT);
         this.ratings = new LinkedList<>();
-
         this.workers = new LinkedList<>();
         this.enrollments = new HashTable<>();
-
     }
-
-
 
     public String getEventId() {
         return eventId;
@@ -84,11 +59,7 @@ public class Event implements Comparable<Event> {
     }
 
     public void addAttendee(Enrollment enrollment) {
-        //System.out.print(" "+entity.getId()+" ");
-        //System.out.println("voy a añadir: "+enrollment.getAttendee().getPhone());
         enrollments.put(enrollment.getAttendee().getPhone(),enrollment);
-        //System.out.println(enrollments.size());
-
     }
 
     public Entity getEntity() {
@@ -115,10 +86,7 @@ public class Event implements Comparable<Event> {
         Rating newRating = new Rating(rating, message, attendee);
         ratings.insertEnd(newRating);
         sumRating+=rating.getValue();
-
-
         attendee.getRatings().insertEnd(newRating);
-
     }
 
     public boolean hasRatings() {
@@ -138,13 +106,9 @@ public class Event implements Comparable<Event> {
         return ratings.size();
     }
 
-
     public LocalDate getStartDate() {
-        //return startDate.toEpochDay();
         return startDate;
     }
-
-
 
     public boolean isInWorkers(String id) {
         boolean found = false;
@@ -167,18 +131,7 @@ public class Event implements Comparable<Event> {
         return workers.values();
     }
 
-    public Iterator<Enrollment> getAttendees(){
-
-        //Collection<Enrollment> allValuesCollection = enrollments.values();
-        //return (Iterator<Enrollment>) allValuesCollection.iterator();
-
-        //return new IteratorArrayImpl(enrollments.values().toArray(), enrollments.size(), 0);
-        return enrollments.values();
-    }
-
-
-//public int numAttendees() { return attendees.size(); }
-
+    public Iterator<Enrollment> getAttendees(){ return enrollments.values(); }
 
     public void setEntity(Entity entity) {
         this.entity = entity;

@@ -1,10 +1,8 @@
 package uoc.ds.pr.model;
 
 import uoc.ds.pr.UniversityEvents;
-
 import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.Locale;
 
 public class EventRequest implements Comparable<EventRequest> {
 
@@ -50,21 +48,12 @@ public class EventRequest implements Comparable<EventRequest> {
         this.status = status;
     }
 
-
     public Event getEvent() {
         return event;
     }
 
     public Entity getEntity() {
         return getEvent().getEntity();
-    }
-
-
-    public LocalDate getDateStatus() {
-        if (dateStatus==null) {
-            return LocalDate.of(1,1,1);
-        }
-        return dateStatus;
     }
 
     @Override

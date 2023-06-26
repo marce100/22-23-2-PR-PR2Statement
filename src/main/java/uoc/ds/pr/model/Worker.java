@@ -9,7 +9,6 @@ public class Worker {
     private String surname;
     private LocalDate birthday;
     private String roleId;
-
     private Role role;
 
     public Worker(String id, String name, String surname, LocalDate birthday, String roleId) {
@@ -41,9 +40,7 @@ public class Worker {
         return surname;
     }
 
-
     public Role getRole(){return role;}
-
 
     public void setSurname(String surname) {
         this.surname = surname;
@@ -68,39 +65,5 @@ public class Worker {
     public void setRole(Role role) {
         this.role = role;
     }
-
-
-
-
-
-/*
-    *
-    *
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Worker worker = (Worker) obj;
-        return id == worker.id && Objects.equals(name, worker.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, id);
-    }
-    *
-    *
-    * */
-
-
-
-
-
-
-
-
-
 
 }

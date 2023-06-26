@@ -13,10 +13,7 @@ public class Rating {
         this.attendee = attendee;
     }
 
-    public UniversityEvents.Rating rating() {
-
-        return this.rating;
-    }
+    public UniversityEvents.Rating rating() { return this.rating; }
 
     public Attendee getAttendee() {
         return this.attendee;

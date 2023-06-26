@@ -3,8 +3,6 @@ package uoc.ds.pr.model;
 import edu.uoc.ds.adt.sequential.LinkedList;
 import edu.uoc.ds.adt.sequential.List;
 import edu.uoc.ds.traversal.Iterator;
-
-
 import java.time.LocalDate;
 
 public class Attendee  {
@@ -14,8 +12,6 @@ public class Attendee  {
     private LocalDate dateOfBirth;
     private String phone;
     private final List<Event> events;
-
-
     private final List<Rating> ratings;
     private double sumRating;
 
@@ -26,11 +22,7 @@ public class Attendee  {
         this.setDateOfBirth(dateOfBirth);
         this.setPhone(phone);
         this.events = new LinkedList<>();
-
-
         this.ratings = new LinkedList<>();
-
-
     }
 
     public void setName(String name) {
@@ -64,38 +56,7 @@ public class Attendee  {
     public boolean is(String entityId) {
         return id.equals(entityId);
     }
-/*
-    public void addEvent(SportEvent sportEvent) {
-        events.insertEnd(sportEvent);
-    }
 
-    public int numEvents() {
-        return events.size();
-    }
-
-    public boolean isInSportEvent(String eventId) {
-        boolean found = false;
-        SportEvent sportEvent = null;
-        Iterator<SportEvent> it = getEvents();
-        while (it.hasNext() && !found) {
-            sportEvent = it.next();
-            found = sportEvent.is(eventId);
-        }
-        return found;
-    }
-
-    public int numSportEvents() {
-        return events.size();
-    }
-
-    public Iterator<SportEvent> getEvents() {
-        return events.values();
-    }
-
-    public boolean hasEvents() {
-        return this.events.size()>0;
-    }
-*/
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -125,11 +86,8 @@ public class Attendee  {
         return found;
     }
 
-
-
     public List<Rating> getRatings() {
         return ratings;
     }
-
 
 }

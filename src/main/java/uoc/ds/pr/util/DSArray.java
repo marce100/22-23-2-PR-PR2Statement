@@ -4,7 +4,6 @@ import edu.uoc.ds.adt.helpers.KeyValue;
 import edu.uoc.ds.exceptions.InvalidPositionException;
 import edu.uoc.ds.traversal.Iterator;
 import edu.uoc.ds.traversal.IteratorArrayImpl;
-import uoc.ds.pr.model.Entity;
 
 public class DSArray<E> {
     KeyValue<String, E>[] theArray;
