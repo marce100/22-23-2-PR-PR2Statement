@@ -14,3 +14,6 @@ But the result obtained is:
 
  * idEntity10: {idEntity2, idEntity3, idEntity1} 
  * idEntity7: {idEntity1, idEntity3}
+
+
+Finds inconsistencies in the **getBest5Entities** data. The test suite degetBest5EntitiesTest() is modified by the one provided in the forum.
