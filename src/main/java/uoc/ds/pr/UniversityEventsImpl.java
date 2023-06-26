@@ -218,7 +218,7 @@ public class UniversityEventsImpl implements UniversityEvents {
         event.addRating(rating, message, attendee);
         updateBestEvent(event);
 
-
+        //attendee.getRatings().insertEnd(new uoc.ds.pr.model.Rating(rating, message, attendee));
     }
 
 

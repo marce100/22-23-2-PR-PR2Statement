@@ -18,6 +18,9 @@ public abstract class Entity {
 
     private final List<Event> events;
 
+
+
+
 	public Entity(String idUser, String name, String description, UniversityEvents.EntityType entityType) {
         this.setId(idUser);
         this.setName(name);
@@ -25,6 +28,8 @@ public abstract class Entity {
         this.setEntityType(entityType);
         this.events = new LinkedList<>();
         this.level = UniversityEventsPR2.Level.BRONZE;
+
+
     }
 
     public void setName(String name) {
@@ -91,4 +96,8 @@ public abstract class Entity {
     public void setLevel(UniversityEventsPR2.Level level) {
         this.level = level;
     }
+
+
+
+
 }

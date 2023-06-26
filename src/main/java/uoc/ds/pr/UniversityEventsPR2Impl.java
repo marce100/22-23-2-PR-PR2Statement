@@ -442,9 +442,6 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
         if (relatedNodeTypeFollower.equals(RelatedNodeType.ATTENDEE) && !getAttendees().containsKey(followerId)) throw new FollowerNotFound();
         if (numFollowings(followerId, relatedNodeTypeFollower)==0) throw new NoFollowedException();
 
-
-
-
         // Get parent
         String id = null;
         Iterator<Edge<String, DSNode>> it = graph.edges();
@@ -456,34 +453,29 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
             }
         }
 
-//        System.out.println("???????????????????????????????");
-//        System.out.println("Buscar seguidores de: "+followerId);
-//        System.out.println("Anterior: "+id);
-//        System.out.println("???????????????????????????????");
-
-        ArrayList<DSNode> result = new ArrayList<>();
+        List<DSNode> result = new LinkedList<>();
         Iterator<Edge<String, DSNode>> it2 = graph.edges();
         while (it2.hasNext()) {
             DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it2.next();
             if (_edge.getVertexDst().getValue().getId().equals(id)) {
-//                System.out.println(
-//                        _edge.getLabel() + " " +
-//                        _edge.getVertexSrc().getValue().getId() + " "+
-//                        _edge.getVertexSrc().getValue().getName()+" "+
-//                        _edge.hashCode()  );
-                result.add(_edge.getVertexSrc().getValue());
+                result.insertEnd(_edge.getVertexSrc().getValue());
             }
         }
 
-        for (DSNode dsNode :result) {
-            System.out.println(dsNode.getId());
-        }
+        //Iterator<DSNode> it3 = result.values();
+        //while (it3.hasNext()){
+        //    DSNode dsNode=it3.next();
+        //    System.out.println(dsNode.getId());
+        //}
+        return result.values();
 
+
+        //for (DSNode dsNode :result) {
+        //    System.out.println(dsNode.getId());
+        //}
 
         //Collections.sort(result, Comparator.comparing(DSNode::getId, Comparator.reverseOrder()));
-        return new IteratorArrayImpl(result.toArray(), result.size(), 0);
-        //return result.values();
-
+        //return new IteratorArrayImpl(result.toArray(), result.size(), 0);
     }
 
     @Override
@@ -501,58 +493,167 @@ public class UniversityEventsPR2Impl extends UniversityEventsImpl  implements Un
          *
          */
 
-        System.out.println("----------------------------");
-        System.out.println("BUSCAR: "+followerId);
-        System.out.println("----------------------------");
-        ArrayList<uoc.ds.pr.model.Rating> result = new ArrayList<>();
-        Iterator<Vertex<DSNode>> it = graph.vertexs();
-        while (it.hasNext()){
+        //followerId="idEntity1";
 
-            DSNode node = it.next().getValue();
+        //System.out.println("----------------------------");
+        //System.out.println("BUSCAR: "+followerId);
+        //System.out.println("----------------------------");
 
-            if (node.getId().equals(followerId)) {
-
-                System.out.println(node.getId()+" "+node.getName());
-
-                Iterator<Edge<String, DSNode>> it2 = graph.edges();
-
-              while (it2.hasNext()) {
-                    DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
-
-                    String idAtendee = _edge1.getVertexSrc().getValue().getId();
-                    System.out.println("______"+idAtendee);
+        List<uoc.ds.pr.model.Rating> result = new LinkedList<>();
+        Iterator<Edge<String, DSNode>> it = graph.edges();
+        while (it.hasNext()) {
+            DirectedEdge<String, DSNode> _edge = (DirectedEdge<String, DSNode>)it.next();
+            if (_edge.getVertexDst().getValue().getId().equals(followerId)) {
+                //System.out.print(_edge.getVertexSrc().getValue().getId()+" ");
+                //System.out.println(getAttendees().containsKey(_edge.getVertexSrc().getValue().getId())+" ");
 
 
-                        Iterator<uoc.ds.pr.model.Rating> it3=getAttendee(node.getId()).getRatings().values();
-                        while (it3.hasNext()){
-                            uoc.ds.pr.model.Rating rating= it3.next();
-                            System.out.println("______>"+rating.rating().getValue());
-                            System.out.println("______>"+rating.getMessage());
-                            result.add(rating);
-                        }
-
+                if (getAttendees().containsKey(_edge.getVertexSrc().getValue().getId())){
+                    Iterator<uoc.ds.pr.model.Rating> it2 = getAttendee(_edge.getVertexSrc().getValue().getId()).getRatings().values();
+                    while (it2.hasNext()){
+                        uoc.ds.pr.model.Rating rating = it2.next();
+                        //System.out.println(rating.getId()+ " "+rating.rating()+" "+rating.getMessage());
+                        //System.out.println(getEntities().containsKey(followerId));
+                        //System.out.println(getAttendees().containsKey(followerId));
+                        result.insertEnd(rating);
+                    }
                 }
 
+
+
+
             }
-            break;
         }
 
+        return result.values();
+
+
+//        Iterator<Vertex<DSNode>> it = graph.vertexs();
+//        while (it.hasNext()){
+//            DSNode node = it.next().getValue();
+//            if (node.getId().equals(followerId)) {
+//                System.out.println(node.getId()+" "+node.getName());
+//                //Iterator<Edge<String, DSNode>> it2 = graph.edges();
+//            }
+//            break;
+//        }
+
+//        Attendee attendee = getAttendee(followerId);
+//        System.out.println("Attendee: " + attendee.getId());
+//        Iterator<uoc.ds.pr.model.Rating> it = getAttendee(attendee.getId()).getRatings().values();
+//        while (it.hasNext()){
+//            uoc.ds.pr.model.Rating rating = it.next();
+//            System.out.println(rating.getId()+ " "+rating.rating()+" "+rating.getMessage());
+//        }
 
 //return null;
 
-        //return result.values();
-        Collections.sort(result, Comparator.comparing(uoc.ds.pr.model.Rating::getId/*, Comparator.reverseOrder()*/));
-
-        System.out.println("RESULTADO: ");
-        for (uoc.ds.pr.model.Rating rating : result) {
-            System.out.println(rating.rating().getValue());
-            System.out.println(rating.getId());
-            System.out.println(rating.getMessage());
-
-        }
 
 
-        return new IteratorArrayImpl(result.toArray(), result.size(), 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        ArrayList<uoc.ds.pr.model.Rating> result = new ArrayList<>();
+//        Iterator<Vertex<DSNode>> it = graph.vertexs();
+//        while (it.hasNext()){
+//
+//            DSNode node = it.next().getValue();
+//
+//            if (node.getId().equals(followerId)) {
+//
+//                System.out.println(node.getId()+" "+node.getName());
+//
+//                Iterator<Edge<String, DSNode>> it2 = graph.edges();
+//
+//              while (it2.hasNext()) {
+//                    DirectedEdge<String, DSNode> _edge1 = (DirectedEdge<String, DSNode>)it2.next();
+//
+//                    String idAtendee = _edge1.getVertexSrc().getValue().getId();
+//                    System.out.println("______"+idAtendee);
+//
+//
+//                        Iterator<uoc.ds.pr.model.Rating> it3=getAttendee(node.getId()).getRatings().values();
+//                        while (it3.hasNext()){
+//                            uoc.ds.pr.model.Rating rating= it3.next();
+//                            System.out.println("______>"+rating.rating().getValue());
+//                            System.out.println("______>"+rating.getMessage());
+//                            result.add(rating);
+//                        }
+//
+//                }
+//
+//            }
+//            break;
+//        }
+//
+//
+////return null;
+//
+//        //return result.values();
+//        Collections.sort(result, Comparator.comparing(uoc.ds.pr.model.Rating::getId/*, Comparator.reverseOrder()*/));
+//
+//        System.out.println("RESULTADO: ");
+//        for (uoc.ds.pr.model.Rating rating : result) {
+//            System.out.println(rating.rating().getValue());
+//            System.out.println(rating.getId());
+//            System.out.println(rating.getMessage());
+//
+//        }
+//        return new IteratorArrayImpl(result.toArray(), result.size(), 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     @Override
